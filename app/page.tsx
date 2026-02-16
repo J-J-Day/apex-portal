@@ -98,13 +98,13 @@ setLoading(false);
             <div className="flex gap-3">
               <button
                 className="main-gradient-bg text-white font-bold px-5 py-2.5 rounded-lg hover:opacity-90 transition shadow-md"
-                onClick={() => onClick={() => router.push("/link-company")}
+                onClick={() => router.push("/link-company")}
               >
                 Link company
               </button>
               <button
                 className="bg-white border border-gray-200 text-gray-800 font-bold px-5 py-2.5 rounded-lg hover:bg-gray-50 transition"
-                onClick={() => onClick={() => router.push("/link-company")}
+                onClick={() => router.push("/link-company")}
               >
                 Set preferences
               </button>
@@ -126,7 +126,7 @@ setLoading(false);
             </p>
             <button
               className="mt-5 w-full main-gradient-bg text-white font-bold py-2.5 rounded-lg hover:opacity-90 transition"
-              onClick={() => onClick={() => router.push("/link-company")}
+              onClick={() => router.push("/link-company")}
             >
               Link company
             </button>
@@ -144,7 +144,7 @@ setLoading(false);
             </p>
             <button
               className="mt-5 w-full bg-white border border-gray-200 text-gray-800 font-bold py-2.5 rounded-lg hover:bg-gray-50 transition"
-              onClick={() => onClick={() => router.push("/link-company")}
+              onClick={() => router.push("/link-company")}
             >
               Set preferences
             </button>
@@ -246,7 +246,7 @@ setLoading(false);
               <div className="pt-4 border-t border-gray-200">
                 <button
                   className="w-full main-gradient-bg text-white font-bold py-2.5 rounded-lg hover:opacity-90 transition"
-                  onClick={() => onClick={() => router.push("/link-company")}
+                  onClick={() => router.push("/link-company")}
                 >
                   Continue setup
                 </button>
