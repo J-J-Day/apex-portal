@@ -144,7 +144,7 @@ setLoading(false);
             </p>
             <button
               className="mt-5 w-full bg-white border border-gray-200 text-gray-800 font-bold py-2.5 rounded-lg hover:bg-gray-50 transition"
-              onClick={() => alert("We’ll build this page next")}
+              onClick={() => onClick={() => router.push("/link-company")}
             >
               Set preferences
             </button>
