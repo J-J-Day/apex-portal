@@ -98,13 +98,13 @@ setLoading(false);
             <div className="flex gap-3">
               <button
                 className="main-gradient-bg text-white font-bold px-5 py-2.5 rounded-lg hover:opacity-90 transition shadow-md"
-                onClick={() => alert("Next step: we’ll build the Link Company screen")}
+                onClick={() => onClick={() => router.push("/link-company")}
               >
                 Link company
               </button>
               <button
                 className="bg-white border border-gray-200 text-gray-800 font-bold px-5 py-2.5 rounded-lg hover:bg-gray-50 transition"
-                onClick={() => alert("Next step: we’ll build Search Preferences")}
+                onClick={() => onClick={() => router.push("/link-company")}
               >
                 Set preferences
               </button>
