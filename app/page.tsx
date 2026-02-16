@@ -21,7 +21,20 @@ export default function PortalHomePage() {
       }
 
       setEmail(user.email ?? null);
-      setLoading(false);
+
+// fetch profile from Supabase
+const { data: prof, error: profErr } = await supabase
+  .from("profiles")
+  .select("*")
+  .eq("id", user.id)
+  .single();
+
+if (!profErr) {
+  setProfile(prof);
+}
+
+setLoading(false);
+
     };
 
     run();
@@ -187,26 +200,49 @@ export default function PortalHomePage() {
           <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-6">
             <h3 className="text-xl font-extrabold dark-purple-text">Your setup</h3>
 
-            <div className="mt-5 space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="text-gray-700 font-semibold">Company linked</div>
-                <span className="text-xs font-bold px-3 py-1 rounded-full bg-red-50 text-red-700 border border-red-100">
-                  Not yet
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="text-gray-700 font-semibold">Preferences set</div>
-                <span className="text-xs font-bold px-3 py-1 rounded-full bg-red-50 text-red-700 border border-red-100">
-                  Not yet
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="text-gray-700 font-semibold">Monitoring active</div>
-                <span className="text-xs font-bold px-3 py-1 rounded-full bg-yellow-50 text-yellow-800 border border-yellow-100">
-                  Pending
-                </span>
-              </div>
+           <div className="mt-5 space-y-4">
+  <div className="flex items-center justify-between">
+    <div className="text-gray-700 font-semibold">Company linked</div>
+    <span
+      className={`text-xs font-bold px-3 py-1 rounded-full border ${
+        profile?.company_number
+          ? "bg-green-50 text-green-700 border-green-100"
+          : "bg-red-50 text-red-700 border-red-100"
+      }`}
+    >
+      {profile?.company_number ? "Complete" : "Not yet"}
+    </span>
+  </div>
 
+  <div className="flex items-center justify-between">
+    <div className="text-gray-700 font-semibold">Preferences set</div>
+    <span
+      className={`text-xs font-bold px-3 py-1 rounded-full border ${
+        profile?.preferences_set
+          ? "bg-green-50 text-green-700 border-green-100"
+          : "bg-red-50 text-red-700 border-red-100"
+      }`}
+    >
+      {profile?.preferences_set ? "Complete" : "Not yet"}
+    </span>
+  </div>
+
+  <div className="flex items-center justify-between">
+    <div className="text-gray-700 font-semibold">Monitoring active</div>
+    <span
+      className={`text-xs font-bold px-3 py-1 rounded-full border ${
+        profile?.company_number && profile?.preferences_set
+          ? "bg-green-50 text-green-700 border-green-100"
+          : "bg-yellow-50 text-yellow-800 border-yellow-100"
+      }`}
+    >
+      {profile?.company_number && profile?.preferences_set
+        ? "Active"
+        : "Pending"}
+    </span>
+  </div>
+</div>
+            
               <div className="pt-4 border-t border-gray-200">
                 <button
                   className="w-full main-gradient-bg text-white font-bold py-2.5 rounded-lg hover:opacity-90 transition"
