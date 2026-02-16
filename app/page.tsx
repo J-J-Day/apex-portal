@@ -246,7 +246,7 @@ setLoading(false);
               <div className="pt-4 border-t border-gray-200">
                 <button
                   className="w-full main-gradient-bg text-white font-bold py-2.5 rounded-lg hover:opacity-90 transition"
-                  onClick={() => alert("Next: link company form + Companies House API")}
+                  onClick={() => onClick={() => router.push("/link-company")}
                 >
                   Continue setup
                 </button>
