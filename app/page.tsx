@@ -126,7 +126,7 @@ setLoading(false);
             </p>
             <button
               className="mt-5 w-full main-gradient-bg text-white font-bold py-2.5 rounded-lg hover:opacity-90 transition"
-              onClick={() => alert("We’ll build this page next")}
+              onClick={() => onClick={() => router.push("/link-company")}
             >
               Link company
             </button>
