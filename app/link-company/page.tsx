@@ -2,30 +2,57 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "../../lib/supabase";
+import { supabase } from "../lib/supabase";
 
 export default function LinkCompanyPage() {
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
+
   const [companyNumber, setCompanyNumber] = useState("");
+  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
   useEffect(() => {
-    const run = async () => {
+    const load = async () => {
+      setErrorMsg(null);
       const { data } = await supabase.auth.getUser();
-      if (!data.user) {
+      const user = data.user;
+
+      if (!user) {
         router.push("/login");
         return;
       }
+
+      // Load existing value (if any)
+      const { data: prof, error } = await supabase
+        .from("profiles")
+        .select("company_number")
+        .eq("id", user.id)
+        .single();
+
+      if (!error && prof?.company_number) {
+        setCompanyNumber(prof.company_number);
+      }
+
       setLoading(false);
     };
-    run();
+
+    load();
   }, [router]);
 
   const save = async () => {
-    setMessage(null);
     setSaving(true);
+    setErrorMsg(null);
+    setSuccessMsg(null);
+
+    const cleaned = companyNumber.trim().toUpperCase();
+
+    if (!cleaned) {
+      setSaving(false);
+      setErrorMsg("Please enter a Companies House number.");
+      return;
+    }
 
     const { data } = await supabase.auth.getUser();
     const user = data.user;
@@ -35,64 +62,90 @@ export default function LinkCompanyPage() {
       return;
     }
 
-    const cleaned = companyNumber.trim().toUpperCase();
-
+    // Update the user's profile row
     const { error } = await supabase
       .from("profiles")
-      .upsert(
-        { id: user.id, company_number: cleaned },
-        { onConflict: "id" }
-      );
+      .update({ company_number: cleaned })
+      .eq("id", user.id);
 
     if (error) {
-      setMessage(`Error: ${error.message}`);
-    } else {
-      setMessage("Saved! ✅");
-      router.push("/");
+      setErrorMsg(error.message);
+      setSaving(false);
+      return;
     }
 
+    setSuccessMsg("Company linked successfully ✅");
     setSaving(false);
+
+    // Go back to portal after a short moment
+    setTimeout(() => {
+      router.push("/");
+      router.refresh();
+    }, 500);
   };
 
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center">Loading…</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center text-gray-600">
+        Loading…
+      </div>
+    );
   }
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-xl mx-auto px-6 py-12">
-        <h1 className="text-3xl font-extrabold dark-purple-text">Link your company</h1>
-        <p className="text-gray-600 mt-2">
-          Enter your Companies House number (e.g. 12345678 or SC123456).
-        </p>
+      <header className="bg-white shadow-sm">
+        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="font-bold text-lg">Link company</div>
+          <button
+            onClick={() => router.push("/")}
+            className="px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition"
+          >
+            Back
+          </button>
+        </div>
+      </header>
 
-        <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-6 mt-6">
-          <label className="text-sm font-semibold text-gray-700">Companies House number</label>
-          <input
-            value={companyNumber}
-            onChange={(e) => setCompanyNumber(e.target.value)}
-            className="mt-2 w-full border border-gray-200 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-gray-200"
-            placeholder="e.g. 12345678"
-          />
+      <main className="container mx-auto px-6 py-10 max-w-xl">
+        <div className="bg-white rounded-2xl shadow-lg p-8">
+          <h1 className="text-2xl font-bold">Companies House number</h1>
+          <p className="text-gray-600 mt-2">
+            Enter your company number and we’ll save it to your profile.
+          </p>
+
+          <div className="mt-6">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Company number
+            </label>
+            <input
+              value={companyNumber}
+              onChange={(e) => setCompanyNumber(e.target.value)}
+              placeholder="e.g. 12345678"
+              className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-200"
+            />
+          </div>
+
+          {errorMsg && (
+            <div className="mt-4 text-sm text-red-700 bg-red-50 border border-red-100 rounded-lg p-3">
+              {errorMsg}
+            </div>
+          )}
+
+          {successMsg && (
+            <div className="mt-4 text-sm text-green-700 bg-green-50 border border-green-100 rounded-lg p-3">
+              {successMsg}
+            </div>
+          )}
 
           <button
             onClick={save}
-            disabled={saving || companyNumber.trim().length < 6}
-            className="mt-4 w-full main-gradient-bg text-white font-bold py-3 rounded-lg hover:opacity-90 transition disabled:opacity-50"
+            disabled={saving}
+            className="mt-6 w-full px-6 py-3 bg-black text-white rounded-lg hover:opacity-90 transition disabled:opacity-50"
           >
-            {saving ? "Saving…" : "Save company"}
-          </button>
-
-          {message && <div className="mt-4 text-sm text-gray-700">{message}</div>}
-
-          <button
-            onClick={() => router.push("/")}
-            className="mt-4 w-full bg-white border border-gray-200 text-gray-800 font-bold py-3 rounded-lg hover:bg-gray-50 transition"
-          >
-            Back to portal
+            {saving ? "Saving…" : "Save"}
           </button>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
