@@ -15,7 +15,7 @@ const INDUSTRY_OPTIONS = [
   "Retail",
 ];
 
-const FUNDING_OPTIONS = [
+const OPPORTUNITY_OPTIONS = [
   "Capital grants",
   "Decarbonisation",
   "Innovation funding",
@@ -26,9 +26,10 @@ const FUNDING_OPTIONS = [
 type Profile = {
   id: string;
   industries: string[] | null;
-  funding_types: string[] | null;
+  funding_types: string[] | null; // keeping column name as-is in DB
   region: string | null;
   min_amount: number | null;
+  max_amount: number | null;
   preferences_set: boolean | null;
 };
 
@@ -60,15 +61,17 @@ export default function PreferencesPage() {
 
       const { data: prof } = await supabase
         .from("profiles")
-        .select("id, industries, funding_types, region, min_amount, preferences_set")
+        .select("id, industries, funding_types, region, min_amount, max_amount, preferences_set")
         .eq("id", user.id)
-        .single<Profile>();
+        .single();
 
       if (prof) {
-        setIndustries(prof.industries ?? []);
-        setFundingTypes(prof.funding_types ?? []);
-        setRegion(prof.region ?? "UK-wide");
-        setMinAmount(String(prof.min_amount ?? 50000));
+        const p = prof as Profile;
+        setIndustries(p.industries ?? []);
+        setFundingTypes(p.funding_types ?? []);
+        setRegion(p.region ?? "UK-wide");
+        setMinAmount(String(p.min_amount ?? 50000));
+        setMaxAmount(String(p.max_amount ?? 250000));
       }
 
       setLoading(false);
@@ -82,6 +85,12 @@ export default function PreferencesPage() {
     else setter([...list, value]);
   };
 
+  const toMoneyInt = (value: string, fallback: number) => {
+    const n = Number(value);
+    if (!Number.isFinite(n)) return fallback;
+    return Math.max(0, Math.round(n));
+  };
+
   const save = async () => {
     setSaving(true);
 
@@ -93,8 +102,11 @@ export default function PreferencesPage() {
       return;
     }
 
-    const min = Number(minAmount);
-    const min_amount = Number.isFinite(min) ? Math.max(0, Math.round(min)) : 0;
+    const min_amount = toMoneyInt(minAmount, 0);
+    const max_amount = toMoneyInt(maxAmount, 0);
+
+    // Optional: if max is set and smaller than min, auto-fix it
+    const finalMax = max_amount > 0 && max_amount < min_amount ? min_amount : max_amount;
 
     const { error } = await supabase
       .from("profiles")
@@ -103,6 +115,7 @@ export default function PreferencesPage() {
         funding_types: fundingTypes,
         region,
         min_amount,
+        max_amount: finalMax,
         preferences_set: true,
       })
       .eq("id", user.id);
@@ -156,11 +169,11 @@ export default function PreferencesPage() {
             </div>
           </div>
 
-          {/* Funding types */}
+          {/* Opportunity types */}
           <div className="mt-8">
             <div className="font-bold text-gray-900 mb-3">Opportunity type</div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {FUNDING_OPTIONS.map((opt) => (
+              {OPPORTUNITY_OPTIONS.map((opt) => (
                 <label
                   key={opt}
                   className="flex items-center gap-3 p-3 rounded-xl border border-gray-200 hover:bg-gray-50 cursor-pointer"
@@ -177,7 +190,7 @@ export default function PreferencesPage() {
             </div>
           </div>
 
-          {/* Region + min amount */}
+          {/* Region + values */}
           <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
               <div className="font-bold text-gray-900 mb-2">Region</div>
@@ -195,7 +208,7 @@ export default function PreferencesPage() {
             </div>
 
             <div>
-              <div className="font-bold text-gray-900 mb-2">Minimum funding (£)</div>
+              <div className="font-bold text-gray-900 mb-2">Minimum opportunity value (£)</div>
               <input
                 value={minAmount}
                 onChange={(e) => setMinAmount(e.target.value)}
@@ -205,6 +218,20 @@ export default function PreferencesPage() {
               />
               <div className="text-xs text-gray-500 mt-2">
                 We’ll only show opportunities above this value.
+              </div>
+            </div>
+
+            <div>
+              <div className="font-bold text-gray-900 mb-2">Maximum opportunity value (£)</div>
+              <input
+                value={maxAmount}
+                onChange={(e) => setMaxAmount(e.target.value)}
+                inputMode="numeric"
+                className="w-full rounded-xl border border-gray-200 px-4 py-3"
+                placeholder="e.g. 250000"
+              />
+              <div className="text-xs text-gray-500 mt-2">
+                We’ll only show opportunities up to this value.
               </div>
             </div>
           </div>
