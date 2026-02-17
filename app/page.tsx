@@ -23,15 +23,13 @@ export default function PortalHomePage() {
       setEmail(user.email ?? null);
 
       // Fetch profile
-      const { data: prof } = await supabase
+      const { data: prof, error: profErr } = await supabase
         .from("profiles")
         .select("*")
         .eq("id", user.id)
         .single();
 
-      if (prof) {
-        setProfile(prof);
-      }
+      if (!profErr && prof) setProfile(prof);
 
       setLoading(false);
     };
@@ -52,20 +50,35 @@ export default function PortalHomePage() {
     );
   }
 
+  const goLinkCompany = () => router.push("/link-company");
+  const goPrefs = () => alert("Next step: we’ll build Search Preferences");
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Top Bar */}
-      <header className="bg-white shadow-sm">
-        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-          <div className="font-bold text-lg">APEX Portal</div>
+    <div className="min-h-screen">
+      {/* Top bar */}
+      <header className="bg-white/90 backdrop-blur-md sticky top-0 z-40 shadow-sm">
+        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <i className="fas fa-chart-line text-2xl secondary-gradient-text" />
+            <div>
+              <div className="text-xl font-extrabold secondary-gradient-text leading-tight">
+                APEX
+              </div>
+              <div className="text-[10px] font-semibold text-gray-500 tracking-widest -mt-1">
+                PORTAL
+              </div>
+            </div>
+          </div>
 
           <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-600">
-              Signed in as <span className="font-semibold">{email}</span>
-            </span>
+            <div className="hidden md:block text-sm text-gray-600">
+              Signed in as{" "}
+              <span className="font-semibold text-gray-800">{email}</span>
+            </div>
+
             <button
               onClick={logout}
-              className="px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition"
+              className="bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold px-4 py-2 rounded-lg transition"
             >
               Log out
             </button>
@@ -73,86 +86,61 @@ export default function PortalHomePage() {
         </div>
       </header>
 
-      {/* Main Content */}
+      {/* Content */}
       <main className="container mx-auto px-6 py-10">
+        {/* Welcome */}
+        <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-8">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div>
+              <h1 className="text-3xl font-extrabold dark-purple-text">
+                Welcome to Apex 👋
+              </h1>
+              <p className="text-gray-600 mt-2 max-w-2xl">
+                Let’s get your account set up so Apex can automatically match you
+                to relevant opportunities and notify you the moment something new
+                is published.
+              </p>
+            </div>
 
-        {/* Welcome Card */}
-        <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
-          <h1 className="text-3xl font-bold mb-2">Welcome to Apex 👋</h1>
-          <p className="text-gray-600 mb-6">
-            Let’s finish setting up your account.
-          </p>
+            <div className="flex gap-3">
+              <button
+                className="main-gradient-bg text-white font-bold px-5 py-2.5 rounded-lg hover:opacity-90 transition shadow-md"
+                onClick={goLinkCompany}
+              >
+                Link company
+              </button>
+              <button
+                className="bg-white border border-gray-200 text-gray-800 font-bold px-5 py-2.5 rounded-lg hover:bg-gray-50 transition"
+                onClick={goPrefs}
+              >
+                Set preferences
+              </button>
+            </div>
+          </div>
+        </div>
 
-          <div className="flex gap-4">
+        {/* Onboarding steps */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+          <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-6">
+            <div className="w-12 h-12 rounded-2xl bg-gray-50 border border-gray-200 flex items-center justify-center mb-4">
+              <span className="text-xl secondary-gradient-text">
+                <i className="fas fa-building" />
+              </span>
+            </div>
+            <h2 className="text-lg font-extrabold dark-purple-text">
+              1) Link your company
+            </h2>
+            <p className="text-gray-600 mt-2 leading-7">
+              Add your Companies House number and we’ll automatically pull your
+              SIC codes and business details.
+            </p>
             <button
-              onClick={() => router.push("/link-company")}
-              className="px-6 py-3 bg-black text-white rounded-lg hover:opacity-90 transition"
+              className="mt-5 w-full main-gradient-bg text-white font-bold py-2.5 rounded-lg hover:opacity-90 transition"
+              onClick={goLinkCompany}
             >
               Link company
             </button>
-
-            <button
-              onClick={() => alert("Preferences screen coming next")}
-              className="px-6 py-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition"
-            >
-              Set preferences
-            </button>
           </div>
-        </div>
 
-        {/* Setup Status */}
-        <div className="bg-white rounded-2xl shadow-lg p-6">
-          <h2 className="text-xl font-bold mb-6">Your setup</h2>
-
-          <div className="space-y-4">
-
-            {/* Company Linked */}
-            <div className="flex justify-between items-center">
-              <span>Company linked</span>
-              <span
-                className={`px-3 py-1 rounded-full text-xs font-bold ${
-                  profile?.company_number
-                    ? "bg-green-100 text-green-700"
-                    : "bg-red-100 text-red-700"
-                }`}
-              >
-                {profile?.company_number ? "Complete" : "Not yet"}
-              </span>
-            </div>
-
-            {/* Preferences */}
-            <div className="flex justify-between items-center">
-              <span>Preferences set</span>
-              <span
-                className={`px-3 py-1 rounded-full text-xs font-bold ${
-                  profile?.preferences_set
-                    ? "bg-green-100 text-green-700"
-                    : "bg-red-100 text-red-700"
-                }`}
-              >
-                {profile?.preferences_set ? "Complete" : "Not yet"}
-              </span>
-            </div>
-
-            {/* Monitoring */}
-            <div className="flex justify-between items-center">
-              <span>Monitoring active</span>
-              <span
-                className={`px-3 py-1 rounded-full text-xs font-bold ${
-                  profile?.company_number && profile?.preferences_set
-                    ? "bg-green-100 text-green-700"
-                    : "bg-yellow-100 text-yellow-700"
-                }`}
-              >
-                {profile?.company_number && profile?.preferences_set
-                  ? "Active"
-                  : "Pending"}
-              </span>
-            </div>
-          </div>
-        </div>
-
-      </main>
-    </div>
-  );
-}
+          <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-6">
+            <div className="w-12 h-12 rounded-2xl bg-gray-50 border border-gray-200 flex items-center justify-center mb-4">
