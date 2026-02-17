@@ -7,135 +7,90 @@ import { supabase } from "../../lib/supabase";
 export default function LinkCompanyPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-
   const [companyNumber, setCompanyNumber] = useState("");
-  const [error, setError] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
 
   useEffect(() => {
     const run = async () => {
       const { data } = await supabase.auth.getUser();
-      const user = data.user;
-
-      if (!user) {
+      if (!data.user) {
         router.push("/login");
         return;
       }
-
-      // Prefill from profile if it exists
-      const { data: prof } = await supabase
-        .from("profiles")
-        .select("company_number")
-        .eq("id", user.id)
-        .single();
-
-      if (prof?.company_number) setCompanyNumber(prof.company_number);
-
       setLoading(false);
     };
-
     run();
   }, [router]);
 
-  const onSave = async () => {
-    setError(null);
-
-    const cleaned = companyNumber.trim().toUpperCase();
-    if (!cleaned) {
-      setError("Please enter your Companies House number.");
-      return;
-    }
-
+  const save = async () => {
+    setMessage(null);
     setSaving(true);
 
     const { data } = await supabase.auth.getUser();
     const user = data.user;
 
     if (!user) {
-      setSaving(false);
       router.push("/login");
       return;
     }
 
-    const { error: upErr } = await supabase
+    const cleaned = companyNumber.trim().toUpperCase();
+
+    const { error } = await supabase
       .from("profiles")
-      .update({ company_number: cleaned })
-      .eq("id", user.id);
+      .upsert(
+        { id: user.id, company_number: cleaned },
+        { onConflict: "id" }
+      );
 
-    setSaving(false);
-
-    if (upErr) {
-      setError(upErr.message);
-      return;
+    if (error) {
+      setMessage(`Error: ${error.message}`);
+    } else {
+      setMessage("Saved! ✅");
+      router.push("/");
     }
 
-    // back to portal home
-    router.push("/");
+    setSaving(false);
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center text-gray-600">
-        Loading…
-      </div>
-    );
+    return <div className="min-h-screen flex items-center justify-center">Loading…</div>;
   }
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-6 py-10 max-w-2xl">
-        <button
-          className="text-sm font-semibold text-gray-600 hover:text-gray-900 mb-6"
-          onClick={() => router.push("/")}
-        >
-          ← Back to dashboard
-        </button>
+      <div className="max-w-xl mx-auto px-6 py-12">
+        <h1 className="text-3xl font-extrabold dark-purple-text">Link your company</h1>
+        <p className="text-gray-600 mt-2">
+          Enter your Companies House number (e.g. 12345678 or SC123456).
+        </p>
 
-        <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-8">
-          <h1 className="text-2xl font-extrabold dark-purple-text">
-            Link your company
-          </h1>
-          <p className="text-gray-600 mt-2">
-            Enter your Companies House number. Next we’ll automatically pull your SIC codes and business details.
-          </p>
+        <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-6 mt-6">
+          <label className="text-sm font-semibold text-gray-700">Companies House number</label>
+          <input
+            value={companyNumber}
+            onChange={(e) => setCompanyNumber(e.target.value)}
+            className="mt-2 w-full border border-gray-200 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-gray-200"
+            placeholder="e.g. 12345678"
+          />
 
-          <div className="mt-6">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Companies House number
-            </label>
-            <input
-              value={companyNumber}
-              onChange={(e) => setCompanyNumber(e.target.value)}
-              placeholder="e.g. 12345678"
-              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-200"
-            />
-            <p className="text-xs text-gray-500 mt-2">
-              Tip: it’s usually 8 characters (sometimes starts with letters).
-            </p>
-          </div>
+          <button
+            onClick={save}
+            disabled={saving || companyNumber.trim().length < 6}
+            className="mt-4 w-full main-gradient-bg text-white font-bold py-3 rounded-lg hover:opacity-90 transition disabled:opacity-50"
+          >
+            {saving ? "Saving…" : "Save company"}
+          </button>
 
-          {error && (
-            <div className="mt-4 text-sm font-semibold text-red-700 bg-red-50 border border-red-100 rounded-lg p-3">
-              {error}
-            </div>
-          )}
+          {message && <div className="mt-4 text-sm text-gray-700">{message}</div>}
 
-          <div className="mt-8 flex gap-3">
-            <button
-              onClick={onSave}
-              disabled={saving}
-              className="main-gradient-bg text-white font-bold px-5 py-2.5 rounded-lg hover:opacity-90 transition shadow-md disabled:opacity-60"
-            >
-              {saving ? "Saving..." : "Save company"}
-            </button>
-
-            <button
-              onClick={() => router.push("/")}
-              className="bg-white border border-gray-200 text-gray-800 font-bold px-5 py-2.5 rounded-lg hover:bg-gray-50 transition"
-            >
-              Cancel
-            </button>
-          </div>
+          <button
+            onClick={() => router.push("/")}
+            className="mt-4 w-full bg-white border border-gray-200 text-gray-800 font-bold py-3 rounded-lg hover:bg-gray-50 transition"
+          >
+            Back to portal
+          </button>
         </div>
       </div>
     </div>
