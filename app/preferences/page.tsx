@@ -42,6 +42,7 @@ export default function PreferencesPage() {
   const [fundingTypes, setFundingTypes] = useState<string[]>([]);
   const [region, setRegion] = useState<string>("UK-wide");
   const [minAmount, setMinAmount] = useState<string>("50000");
+  const [maxAmount, setMaxAmount] = useState<string>("250000");
 
   const canSave = useMemo(() => {
     return industries.length > 0 && fundingTypes.length > 0 && region.trim().length > 0;
@@ -157,7 +158,7 @@ export default function PreferencesPage() {
 
           {/* Funding types */}
           <div className="mt-8">
-            <div className="font-bold text-gray-900 mb-3">Funding type</div>
+            <div className="font-bold text-gray-900 mb-3">Opportunity type</div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {FUNDING_OPTIONS.map((opt) => (
                 <label
