@@ -2,20 +2,18 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "../../lib/supabase";
+import { supabase } from "../lib/supabase";
 
 export default function LinkCompanyPage() {
   const router = useRouter();
-
-  const [companyNumber, setCompanyNumber] = useState("");
   const [loading, setLoading] = useState(true);
+  const [companyNumber, setCompanyNumber] = useState("");
   const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
   useEffect(() => {
-    const load = async () => {
-      setErrorMsg(null);
+    const run = async () => {
       const { data } = await supabase.auth.getUser();
       const user = data.user;
 
@@ -24,126 +22,135 @@ export default function LinkCompanyPage() {
         return;
       }
 
-      // Load existing value (if any)
-      const { data: prof, error } = await supabase
+      const { data: prof } = await supabase
         .from("profiles")
         .select("company_number")
         .eq("id", user.id)
         .single();
 
-      if (!error && prof?.company_number) {
-        setCompanyNumber(prof.company_number);
-      }
-
+      if (prof?.company_number) setCompanyNumber(prof.company_number);
       setLoading(false);
     };
 
-    load();
+    run();
   }, [router]);
 
   const save = async () => {
-    setSaving(true);
     setErrorMsg(null);
     setSuccessMsg(null);
 
-    const cleaned = companyNumber.trim().toUpperCase();
-
+    const cleaned = companyNumber.trim();
     if (!cleaned) {
-      setSaving(false);
       setErrorMsg("Please enter a Companies House number.");
       return;
     }
+
+    setSaving(true);
 
     const { data } = await supabase.auth.getUser();
     const user = data.user;
 
     if (!user) {
+      setSaving(false);
       router.push("/login");
       return;
     }
 
-    // Update the user's profile row
     const { error } = await supabase
       .from("profiles")
       .update({ company_number: cleaned })
       .eq("id", user.id);
 
+    setSaving(false);
+
     if (error) {
       setErrorMsg(error.message);
-      setSaving(false);
       return;
     }
 
-    setSuccessMsg("Company linked successfully ✅");
-    setSaving(false);
-
-    // Go back to portal after a short moment
-    setTimeout(() => {
-      router.push("/");
-      router.refresh();
-    }, 500);
+    setSuccessMsg("Company linked successfully.");
+    setTimeout(() => router.push("/"), 600);
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-gray-600">
+      <div className="min-h-screen grid place-items-center bg-zinc-950 text-zinc-200">
         Loading…
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="font-bold text-lg">Link company</div>
+    <div className="min-h-screen bg-zinc-950 text-zinc-100">
+      {/* Background glow */}
+      <div className="pointer-events-none fixed inset-0">
+        <div className="absolute -top-40 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-fuchsia-600/20 blur-3xl" />
+        <div className="absolute bottom-[-160px] left-[-120px] h-[520px] w-[520px] rounded-full bg-emerald-400/10 blur-3xl" />
+      </div>
+
+      {/* Header */}
+      <header className="sticky top-0 z-50 border-b border-white/10 bg-zinc-950/70 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-4xl items-center justify-between px-6 py-4">
           <button
             onClick={() => router.push("/")}
-            className="px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition"
+            className="text-sm font-semibold text-white/80 hover:text-white transition"
           >
-            Back
+            ← Back to portal
           </button>
+          <div className="text-sm text-white/60">Step 1 of 2</div>
         </div>
       </header>
 
-      <main className="container mx-auto px-6 py-10 max-w-xl">
-        <div className="bg-white rounded-2xl shadow-lg p-8">
-          <h1 className="text-2xl font-bold">Companies House number</h1>
-          <p className="text-gray-600 mt-2">
-            Enter your company number and we’ll save it to your profile.
+      <main className="mx-auto max-w-4xl px-6 py-10">
+        <div className="rounded-3xl border border-white/10 bg-white/5 p-8 ring-1 ring-white/10">
+          <h1 className="text-2xl font-semibold tracking-tight">Link your company</h1>
+          <p className="mt-2 text-sm text-white/70">
+            Add your Companies House number so Apex can personalise matching and reporting.
           </p>
 
-          <div className="mt-6">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Company number
-            </label>
+          <div className="mt-6 grid gap-3">
+            <label className="text-xs font-semibold text-white/70">Companies House number</label>
             <input
               value={companyNumber}
               onChange={(e) => setCompanyNumber(e.target.value)}
               placeholder="e.g. 12345678"
-              className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-200"
+              className="w-full rounded-xl bg-zinc-950/60 px-4 py-3 text-sm text-white ring-1 ring-white/10 placeholder:text-white/35 focus:outline-none focus:ring-2 focus:ring-fuchsia-500/50"
             />
+
+            {errorMsg && (
+              <div className="mt-2 rounded-xl border border-rose-400/20 bg-rose-500/10 px-4 py-3 text-sm text-rose-100">
+                {errorMsg}
+              </div>
+            )}
+
+            {successMsg && (
+              <div className="mt-2 rounded-xl border border-emerald-400/20 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-100">
+                {successMsg}
+              </div>
+            )}
+
+            <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="text-xs text-white/50">
+                Tip: you can find this on Companies House (it’s the 8-digit company number).
+              </div>
+
+              <button
+                onClick={save}
+                disabled={saving}
+                className="rounded-xl bg-gradient-to-r from-orange-500 to-fuchsia-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-fuchsia-600/15 hover:opacity-95 disabled:opacity-60 transition"
+              >
+                {saving ? "Saving…" : "Save & continue"}
+              </button>
+            </div>
           </div>
+        </div>
 
-          {errorMsg && (
-            <div className="mt-4 text-sm text-red-700 bg-red-50 border border-red-100 rounded-lg p-3">
-              {errorMsg}
-            </div>
-          )}
-
-          {successMsg && (
-            <div className="mt-4 text-sm text-green-700 bg-green-50 border border-green-100 rounded-lg p-3">
-              {successMsg}
-            </div>
-          )}
-
-          <button
-            onClick={save}
-            disabled={saving}
-            className="mt-6 w-full px-6 py-3 bg-black text-white rounded-lg hover:opacity-90 transition disabled:opacity-50"
-          >
-            {saving ? "Saving…" : "Save"}
-          </button>
+        {/* Optional next step preview card */}
+        <div className="mt-6 rounded-3xl border border-white/10 bg-white/5 p-6 ring-1 ring-white/10">
+          <div className="text-sm font-semibold">Next: Set preferences</div>
+          <p className="mt-1 text-sm text-white/70">
+            Choose sectors, regions and keywords to filter opportunities.
+          </p>
         </div>
       </main>
     </div>
