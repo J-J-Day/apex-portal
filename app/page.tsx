@@ -79,4 +79,80 @@ export default function PortalHomePage() {
         {/* Welcome Card */}
         <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
           <h1 className="text-3xl font-bold mb-2">Welcome to Apex 👋</h1>
-          <
+          <p className="text-gray-600 mb-6">
+            Let’s finish setting up your account.
+          </p>
+
+          <div className="flex gap-4">
+            <button
+              onClick={() => router.push("/link-company")}
+              className="px-6 py-3 bg-black text-white rounded-lg hover:opacity-90 transition"
+            >
+              Link company
+            </button>
+
+            <button
+              onClick={() => alert("Preferences screen coming next")}
+              className="px-6 py-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition"
+            >
+              Set preferences
+            </button>
+          </div>
+        </div>
+
+        {/* Setup Status */}
+        <div className="bg-white rounded-2xl shadow-lg p-6">
+          <h2 className="text-xl font-bold mb-6">Your setup</h2>
+
+          <div className="space-y-4">
+
+            {/* Company Linked */}
+            <div className="flex justify-between items-center">
+              <span>Company linked</span>
+              <span
+                className={`px-3 py-1 rounded-full text-xs font-bold ${
+                  profile?.company_number
+                    ? "bg-green-100 text-green-700"
+                    : "bg-red-100 text-red-700"
+                }`}
+              >
+                {profile?.company_number ? "Complete" : "Not yet"}
+              </span>
+            </div>
+
+            {/* Preferences */}
+            <div className="flex justify-between items-center">
+              <span>Preferences set</span>
+              <span
+                className={`px-3 py-1 rounded-full text-xs font-bold ${
+                  profile?.preferences_set
+                    ? "bg-green-100 text-green-700"
+                    : "bg-red-100 text-red-700"
+                }`}
+              >
+                {profile?.preferences_set ? "Complete" : "Not yet"}
+              </span>
+            </div>
+
+            {/* Monitoring */}
+            <div className="flex justify-between items-center">
+              <span>Monitoring active</span>
+              <span
+                className={`px-3 py-1 rounded-full text-xs font-bold ${
+                  profile?.company_number && profile?.preferences_set
+                    ? "bg-green-100 text-green-700"
+                    : "bg-yellow-100 text-yellow-700"
+                }`}
+              >
+                {profile?.company_number && profile?.preferences_set
+                  ? "Active"
+                  : "Pending"}
+              </span>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  );
+}
