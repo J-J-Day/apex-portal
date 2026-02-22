@@ -184,7 +184,7 @@ export default function LandingPage() {
             <StepCard
               step="2"
               title="Monitoring & filtering"
-              text="Apex reviews available schemes and filters based on your selected indusrty & preference."
+              text="Apex reviews available schemes and filters based on your selected industry & preference."
             />
             <StepCard
               step="3"
