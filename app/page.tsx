@@ -56,9 +56,7 @@ export default function PortalHomePage() {
 
   const companyComplete = !!profile?.company_number;
   const preferencesComplete = !!profile?.preferences_set;
-
-  // ✅ If you want users to be able to skip linking company:
-  const monitoringActive = preferencesComplete;
+  const monitoringActive = preferencesComplete; // company is optional now
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -83,11 +81,10 @@ export default function PortalHomePage() {
       </header>
 
       <main className="container mx-auto px-6 py-10 space-y-8">
-                {/* Welcome */}
+        {/* Welcome */}
         <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-8">
           <h1 className="text-2xl font-semibold mb-2">Welcome back 👋</h1>
 
-          {/* Dynamic guidance line */}
           <p className="text-gray-600 mb-6">
             {!preferencesComplete
               ? "First step: set your preferences so we know what to alert you on."
@@ -123,40 +120,10 @@ export default function PortalHomePage() {
             )}
           </div>
 
-          {/* Small helper text */}
           <div className="mt-4 text-sm text-gray-500">
             {preferencesComplete
               ? "Tip: you can refine your filters any time in Preferences."
               : "Once preferences are set, we’ll start matching you to relevant opportunities."}
-          </div>
-        </div>
-
-        {/* Opportunities */}
-        <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
-          <div className="flex items-center justify-between gap-4">
-            <h2 className="text-lg font-semibold">Matched Opportunities</h2>
-
-            {preferencesComplete ? (
-              <button
-                onClick={() => router.push("/opportunities")}
-                className="text-sm font-semibold secondary-gradient-text hover:opacity-80 transition"
-              >
-                View all
-              </button>
-            ) : (
-              <button
-                onClick={() => router.push("/preferences")}
-                className="text-sm font-semibold secondary-gradient-text hover:opacity-80 transition"
-              >
-                Set preferences
-              </button>
-            )}
-          </div>
-
-          <div className="mt-4 text-gray-600">
-            {!preferencesComplete
-              ? "Set your preferences to start receiving matched opportunities here."
-              : "No matched opportunities yet. As soon as we find one that matches your filters, it’ll appear here."}
           </div>
         </div>
 
@@ -165,57 +132,23 @@ export default function PortalHomePage() {
           <h2 className="text-lg font-semibold mb-6">Your Setup</h2>
 
           <div className="space-y-4">
-            <StatusRow label="Company linked (optional)" complete={companyComplete} pending={false} />
-            <StatusRow label="Preferences set" complete={preferencesComplete} pending={false} />
-            <StatusRow label="Monitoring active" complete={monitoringActive} pending={!monitoringActive} />
-          </div>
-        </div>
+            <StatusRow
+              label="Preferences set"
+              complete={preferencesComplete}
+              pending={false}
+            />
 
-                {/* Welcome */}
-        <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-8">
-          <h1 className="text-2xl font-semibold mb-2">Welcome back 👋</h1>
+            <StatusRow
+              label="Monitoring active"
+              complete={monitoringActive}
+              pending={!monitoringActive}
+            />
 
-          {/* Dynamic guidance line */}
-          <p className="text-gray-600 mb-6">
-            {!preferencesComplete
-              ? "First step: set your preferences so we know what to alert you on."
-              : "You're set up — view your matched opportunities."}
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
-            {/* Primary CTA */}
-            {!preferencesComplete ? (
-              <button
-                onClick={() => router.push("/preferences")}
-                className="px-6 py-3 main-gradient-bg text-white rounded-lg font-semibold hover:opacity-90 transition"
-              >
-                Set preferences
-              </button>
-            ) : (
-              <button
-                onClick={() => router.push("/opportunities")}
-                className="px-6 py-3 main-gradient-bg text-white rounded-lg font-semibold hover:opacity-90 transition"
-              >
-                View matched opportunities
-              </button>
-            )}
-
-            {/* Secondary CTA (optional) */}
-            {!companyComplete && (
-              <button
-                onClick={() => router.push("/link-company")}
-                className="px-6 py-3 bg-white border border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition"
-              >
-                Link company (optional)
-              </button>
-            )}
-          </div>
-
-          {/* Small helper text */}
-          <div className="mt-4 text-sm text-gray-500">
-            {preferencesComplete
-              ? "Tip: you can refine your filters any time in Preferences."
-              : "Once preferences are set, we’ll start matching you to relevant opportunities."}
+            <StatusRow
+              label="Company linked (optional)"
+              complete={companyComplete}
+              pending={false}
+            />
           </div>
         </div>
 
@@ -247,6 +180,10 @@ export default function PortalHomePage() {
               : "No matched opportunities yet. As soon as we find one that matches your filters, it’ll appear here."}
           </div>
         </div>
+      </main>
+    </div>
+  );
+}
 
 function StatusRow({
   label,
