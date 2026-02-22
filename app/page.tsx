@@ -6,6 +6,7 @@ import { supabase } from "../lib/supabase";
 
 type Profile = {
   company_number: string | null;
+  company_linked: boolean | null;
   preferences_set: boolean | null;
 };
 
@@ -29,7 +30,7 @@ export default function PortalHomePage() {
 
       const { data: prof } = await supabase
         .from("profiles")
-        .select("company_number, preferences_set")
+        .select("company_number, company_linked, preferences_set")
         .eq("id", user.id)
         .single();
 
@@ -56,7 +57,7 @@ export default function PortalHomePage() {
     );
   }
 
-  const companyComplete = !!profile?.company_number;
+  const companyComplete = !!(profile?.company_linked || profile?.company_number);
   const preferencesComplete = !!profile?.preferences_set;
   const monitoringActive = companyComplete && preferencesComplete;
 
