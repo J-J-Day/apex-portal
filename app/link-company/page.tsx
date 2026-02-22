@@ -12,11 +12,9 @@ export default function LinkCompanyPage() {
 
   const [companyNumber, setCompanyNumber] = useState("");
   const [saving, setSaving] = useState(false);
+  const [skipping, setSkipping] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Simple Companies House number validation:
-  // - 8 digits (England/Wales typical)
-  // - or 2 letters + 6 digits (e.g. SC123456, NI123456, OC123456, etc.)
   const isValidCompanyNumber = useMemo(() => {
     const v = companyNumber.trim().toUpperCase();
     return /^(\d{8}|[A-Z]{2}\d{6})$/.test(v);
@@ -34,7 +32,6 @@ export default function LinkCompanyPage() {
 
       setEmail(user.email ?? null);
 
-      // Prefill existing company number if already saved
       const { data: prof } = await supabase
         .from("profiles")
         .select("company_number")
@@ -55,7 +52,7 @@ export default function LinkCompanyPage() {
     const cleaned = companyNumber.trim().toUpperCase();
 
     if (!cleaned) {
-      setError("Please enter your Companies House number.");
+      setError("Please enter your Companies House number, or click Skip for now.");
       return;
     }
 
@@ -80,7 +77,8 @@ export default function LinkCompanyPage() {
         {
           id: user.id,
           company_number: cleaned,
-          company_linked: true, // ✅ THIS is the key change
+          company_linked: true,
+          company_linking_skipped: false, // ✅ if they link, un-skip
           updated_at: new Date().toISOString(),
         },
         { onConflict: "id" }
@@ -94,7 +92,42 @@ export default function LinkCompanyPage() {
     }
 
     router.push("/");
-    router.refresh(); // ✅ makes the homepage re-fetch and update badges immediately
+    router.refresh();
+  };
+
+  const skip = async () => {
+    setError(null);
+    setSkipping(true);
+
+    const { data } = await supabase.auth.getUser();
+    const user = data.user;
+
+    if (!user) {
+      router.push("/login");
+      return;
+    }
+
+    // Mark skipped. Do NOT set company_linked true.
+    const { error: upsertErr } = await supabase
+      .from("profiles")
+      .upsert(
+        {
+          id: user.id,
+          company_linking_skipped: true,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: "id" }
+      );
+
+    setSkipping(false);
+
+    if (upsertErr) {
+      setError(upsertErr.message);
+      return;
+    }
+
+    router.push("/");
+    router.refresh();
   };
 
   if (loading) {
@@ -118,15 +151,14 @@ export default function LinkCompanyPage() {
 
       <main className="container mx-auto px-6 py-10 max-w-2xl">
         <div className="bg-white rounded-2xl shadow-lg p-8">
-          <h1 className="text-2xl font-bold mb-2">Link your company</h1>
+          <h1 className="text-2xl font-bold mb-2">Link your company (optional)</h1>
           <p className="text-gray-600 mb-6">
-            Enter your Companies House number (e.g. <b>12345678</b> or <b>SC123456</b>).
+            If you link your company, we can auto-fill details later. If not, you can still use Apex by setting preferences.
           </p>
 
           <label className="block text-sm font-semibold text-gray-700 mb-2">
             Companies House number
           </label>
-
           <input
             value={companyNumber}
             onChange={(e) => setCompanyNumber(e.target.value)}
@@ -134,7 +166,6 @@ export default function LinkCompanyPage() {
             className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-200"
           />
 
-          {/* Gentle hint (not an error) */}
           {companyNumber.trim().length > 0 && !isValidCompanyNumber && !error && (
             <div className="mt-3 text-xs text-gray-500">
               Format hint: 8 digits (12345678) or 2 letters + 6 digits (SC123456).
@@ -147,7 +178,7 @@ export default function LinkCompanyPage() {
             </div>
           )}
 
-          <div className="flex gap-3 mt-6">
+          <div className="flex flex-col sm:flex-row gap-3 mt-6">
             <button
               onClick={() => router.push("/")}
               className="px-5 py-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition"
@@ -156,8 +187,16 @@ export default function LinkCompanyPage() {
             </button>
 
             <button
+              onClick={skip}
+              disabled={skipping || saving}
+              className="px-5 py-3 rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 transition disabled:opacity-60"
+            >
+              {skipping ? "Skipping…" : "Skip for now"}
+            </button>
+
+            <button
               onClick={save}
-              disabled={saving || !isValidCompanyNumber}
+              disabled={saving || skipping || !isValidCompanyNumber}
               className="px-5 py-3 rounded-lg bg-black text-white hover:opacity-90 transition disabled:opacity-60"
             >
               {saving ? "Saving…" : "Save company"}
