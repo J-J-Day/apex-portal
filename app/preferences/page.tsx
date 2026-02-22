@@ -28,8 +28,8 @@ type Profile = {
   industries: string[] | null;
   funding_types: string[] | null;
   region: string | null;
-  min_amount: number;
-  max_amount: number;
+  min_amount: number | null;
+  max_amount: number | null;
   preferences_set: boolean | null;
 };
 
@@ -42,11 +42,17 @@ export default function PreferencesPage() {
   const [industries, setIndustries] = useState<string[]>([]);
   const [fundingTypes, setFundingTypes] = useState<string[]>([]);
   const [region, setRegion] = useState<string>("UK-wide");
-  const [minAmount, setMinAmount] = useState<string>("0");   // 0 = no minimum
-const [maxAmount, setMaxAmount] = useState<string>("0");   // 0 = no maximum
+
+  // 0 = no min / no max
+  const [minAmount, setMinAmount] = useState<string>("0");
+  const [maxAmount, setMaxAmount] = useState<string>("0");
 
   const canSave = useMemo(() => {
-    return industries.length > 0 && fundingTypes.length > 0 && region.trim().length > 0;
+    return (
+      industries.length > 0 &&
+      fundingTypes.length > 0 &&
+      region.trim().length > 0
+    );
   }, [industries, fundingTypes, region]);
 
   useEffect(() => {
@@ -59,19 +65,21 @@ const [maxAmount, setMaxAmount] = useState<string>("0");   // 0 = no maximum
         return;
       }
 
-      const { data: prof } = await supabase
+      const { data: prof, error } = await supabase
         .from("profiles")
         .select("id, industries, funding_types, region, min_amount, max_amount, preferences_set")
         .eq("id", user.id)
         .single();
 
-      if (prof) {
+      if (!error && prof) {
         const p = prof as Profile;
         setIndustries(p.industries ?? []);
         setFundingTypes(p.funding_types ?? []);
         setRegion(p.region ?? "UK-wide");
-        setMinAmount(String(p.min_amount ?? 50000));
-        setMaxAmount(String(p.max_amount ?? 250000));
+
+        // IMPORTANT: default to 0 to preserve "no limit" behaviour
+        setMinAmount(String(p.min_amount ?? 0));
+        setMaxAmount(String(p.max_amount ?? 0));
       }
 
       setLoading(false);
@@ -80,7 +88,11 @@ const [maxAmount, setMaxAmount] = useState<string>("0");   // 0 = no maximum
     load();
   }, [router]);
 
-  const toggle = (value: string, list: string[], setter: (v: string[]) => void) => {
+  const toggle = (
+    value: string,
+    list: string[],
+    setter: (v: string[]) => void
+  ) => {
     if (list.includes(value)) setter(list.filter((x) => x !== value));
     else setter([...list, value]);
   };
@@ -92,12 +104,15 @@ const [maxAmount, setMaxAmount] = useState<string>("0");   // 0 = no maximum
   };
 
   const save = async () => {
+    if (!canSave) return;
+
     setSaving(true);
 
     const { data: userRes } = await supabase.auth.getUser();
     const user = userRes.user;
 
     if (!user) {
+      setSaving(false);
       router.push("/login");
       return;
     }
@@ -105,20 +120,26 @@ const [maxAmount, setMaxAmount] = useState<string>("0");   // 0 = no maximum
     const min_amount = toMoneyInt(minAmount, 0);
     const max_amount = toMoneyInt(maxAmount, 0);
 
-    // Optional: if max is set and smaller than min, auto-fix it
-    const finalMax = max_amount > 0 && max_amount < min_amount ? min_amount : max_amount;
+    // If max is set (non-zero) and smaller than min, auto-fix it
+    const finalMax =
+      max_amount > 0 && max_amount < min_amount ? min_amount : max_amount;
 
+    // Use upsert so it works even if profile row didn't exist
     const { error } = await supabase
       .from("profiles")
-      .update({
-        industries,
-        funding_types: fundingTypes,
-        region,
-        min_amount,
-        max_amount: finalMax,
-        preferences_set: true,
-      })
-      .eq("id", user.id);
+      .upsert(
+        {
+          id: user.id,
+          industries,
+          funding_types: fundingTypes,
+          region,
+          min_amount,
+          max_amount: finalMax,
+          preferences_set: true,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: "id" }
+      );
 
     setSaving(false);
 
@@ -214,10 +235,10 @@ const [maxAmount, setMaxAmount] = useState<string>("0");   // 0 = no maximum
                 onChange={(e) => setMinAmount(e.target.value)}
                 inputMode="numeric"
                 className="w-full rounded-xl border border-gray-200 px-4 py-3"
-                placeholder="e.g. 50000"
+                placeholder="0 = no minimum"
               />
               <div className="text-xs text-gray-500 mt-2">
-                We’ll only show opportunities above this value.
+                Set to 0 for no minimum.
               </div>
             </div>
 
@@ -228,10 +249,10 @@ const [maxAmount, setMaxAmount] = useState<string>("0");   // 0 = no maximum
                 onChange={(e) => setMaxAmount(e.target.value)}
                 inputMode="numeric"
                 className="w-full rounded-xl border border-gray-200 px-4 py-3"
-                placeholder="e.g. 250000"
+                placeholder="0 = no maximum"
               />
               <div className="text-xs text-gray-500 mt-2">
-                We’ll only show opportunities up to this value.
+                Set to 0 for no maximum.
               </div>
             </div>
           </div>
