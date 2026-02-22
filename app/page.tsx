@@ -6,8 +6,6 @@ import { supabase } from "../lib/supabase";
 
 type Profile = {
   company_number: string | null;
-  company_linked: boolean | null;
-  company_linking_skipped: boolean | null;
   preferences_set: boolean | null;
 };
 
@@ -31,13 +29,11 @@ export default function PortalHomePage() {
 
       const { data: prof } = await supabase
         .from("profiles")
-        .select("company_number, company_linked, company_linking_skipped, preferences_set")
+        .select("company_number, preferences_set")
         .eq("id", user.id)
         .single();
 
-      if (prof) {
-        setProfile(prof);
-      }
+      if (prof) setProfile(prof);
 
       setLoading(false);
     };
@@ -58,27 +54,23 @@ export default function PortalHomePage() {
     );
   }
 
-  const companyComplete = !!(profile?.company_linked || profile?.company_number);
-const companySkipped = !!profile?.company_linking_skipped;
+  const companyComplete = !!profile?.company_number;
+  const preferencesComplete = !!profile?.preferences_set;
 
-const preferencesComplete = !!profile?.preferences_set;
-
-// ✅ monitoring should only depend on preferences now
-const monitoringActive = preferencesComplete;
+  // ✅ If you want users to be able to skip linking company:
+  const monitoringActive = preferencesComplete;
 
   return (
     <div className="min-h-screen bg-gray-50">
-
       {/* Top Bar */}
       <header className="bg-white border-b border-gray-200">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-          <div className="text-lg font-bold">
-            APEX Portal
-          </div>
+          <div className="text-lg font-bold">APEX Portal</div>
 
           <div className="flex items-center gap-4 text-sm text-gray-600">
             <span>
-              Signed in as <span className="font-semibold text-gray-800">{email}</span>
+              Signed in as{" "}
+              <span className="font-semibold text-gray-800">{email}</span>
             </span>
             <button
               onClick={logout}
@@ -91,12 +83,9 @@ const monitoringActive = preferencesComplete;
       </header>
 
       <main className="container mx-auto px-6 py-10 space-y-8">
-
         {/* Welcome */}
         <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-8">
-          <h1 className="text-2xl font-semibold mb-2">
-            Welcome back 👋
-          </h1>
+          <h1 className="text-2xl font-semibold mb-2">Welcome back 👋</h1>
           <p className="text-gray-600 mb-6">
             Complete your setup to start receiving tailored grant alerts.
           </p>
@@ -106,7 +95,7 @@ const monitoringActive = preferencesComplete;
               onClick={() => router.push("/link-company")}
               className="px-6 py-3 main-gradient-bg text-white rounded-lg font-semibold hover:opacity-90 transition"
             >
-              Link company
+              Link company (optional)
             </button>
 
             <button
@@ -120,78 +109,22 @@ const monitoringActive = preferencesComplete;
 
         {/* Setup Status */}
         <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
-          <h2 className="text-lg font-semibold mb-6">
-            Your Setup
-          </h2>
+          <h2 className="text-lg font-semibold mb-6">Your Setup</h2>
 
           <div className="space-y-4">
-
-            <StatusRow
-  label="Company linked (optional)"
-  complete={companyComplete}
-  pending={false}
-  skipped={companySkipped}
-/>
-
-            function StatusRow({
-  label,
-  complete,
-  pending,
-  skipped,
-}: {
-  label: string;
-  complete: boolean;
-  pending: boolean;
-  skipped?: boolean;
-}) {
-  let badgeStyle = "bg-red-100 text-red-700";
-  let text = "Not yet";
-
-  if (complete) {
-    badgeStyle = "bg-green-100 text-green-700";
-    text = "Complete";
-  } else if (skipped) {
-    badgeStyle = "bg-gray-100 text-gray-700";
-    text = "Skipped";
-  } else if (pending) {
-    badgeStyle = "bg-yellow-100 text-yellow-800";
-    text = "Pending";
-  } else if (!pending) {
-    // for optional steps, we can keep it neutral instead of red
-    badgeStyle = "bg-gray-100 text-gray-700";
-    text = "Optional";
-  }
-
-  return (
-    <div className="flex justify-between items-center">
-      <span className="text-gray-700">{label}</span>
-      <span className={`px-3 py-1 rounded-full text-xs font-semibold ${badgeStyle}`}>
-        {text}
-      </span>
-    </div>
-  );
-}
-
-            <StatusRow
-              label="Monitoring active"
-              complete={monitoringActive}
-              pending={!monitoringActive}
-            />
-
+            <StatusRow label="Company linked (optional)" complete={companyComplete} pending={false} />
+            <StatusRow label="Preferences set" complete={preferencesComplete} pending={false} />
+            <StatusRow label="Monitoring active" complete={monitoringActive} pending={!monitoringActive} />
           </div>
         </div>
 
         {/* Opportunities Placeholder */}
         <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
-          <h2 className="text-lg font-semibold mb-4">
-            Matched Opportunities
-          </h2>
-
+          <h2 className="text-lg font-semibold mb-4">Matched Opportunities</h2>
           <div className="text-gray-600">
-            No matched grants yet. Complete your setup to start receiving alerts.
+            No matched grants yet. Set your preferences to start receiving alerts.
           </div>
         </div>
-
       </main>
     </div>
   );
@@ -200,7 +133,7 @@ const monitoringActive = preferencesComplete;
 function StatusRow({
   label,
   complete,
-  pending
+  pending,
 }: {
   label: string;
   complete: boolean;
