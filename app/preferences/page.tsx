@@ -28,8 +28,8 @@ type Profile = {
   industries: string[] | null;
   funding_types: string[] | null;
   region: string | null;
-  min_amount: number | null;
-  max_amount: number | null;
+  min_amount: number;
+  max_amount: number;
   preferences_set: boolean | null;
 };
 
@@ -42,8 +42,8 @@ export default function PreferencesPage() {
   const [industries, setIndustries] = useState<string[]>([]);
   const [fundingTypes, setFundingTypes] = useState<string[]>([]);
   const [region, setRegion] = useState<string>("UK-wide");
-  const [minAmount, setMinAmount] = useState<string>("50000");
-  const [maxAmount, setMaxAmount] = useState<string>("250000");
+  const [minAmount, setMinAmount] = useState<string>("0");   // 0 = no minimum
+const [maxAmount, setMaxAmount] = useState<string>("0");   // 0 = no maximum
 
   const canSave = useMemo(() => {
     return industries.length > 0 && fundingTypes.length > 0 && region.trim().length > 0;
