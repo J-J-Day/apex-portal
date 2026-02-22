@@ -26,7 +26,7 @@ const OPPORTUNITY_OPTIONS = [
 type Profile = {
   id: string;
   industries: string[] | null;
-  funding_types: string[] | null; // keeping column name as-is in DB
+  funding_types: string[] | null;
   region: string | null;
   min_amount: number | null;
   max_amount: number | null;
