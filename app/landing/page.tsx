@@ -170,75 +170,135 @@ export default function LandingPage() {
 
     {/* Section: How it works */}
 <section id="how-it-works" className="bg-white border-t border-gray-200">
-  <div className="container mx-auto px-6 py-12">
-    <h2 className="text-2xl md:text-3xl font-extrabold dark-purple-text">
-      How the Platform Works
-    </h2>
+<div className="mt-12 grid gap-10 lg:grid-cols-12 items-start">
+  {/* LEFT: Timeline */}
+  <div className="lg:col-span-7 relative">
+    {/* Vertical line */}
+    <div className="absolute left-6 top-0 bottom-0 w-px bg-gray-200 hidden md:block" />
 
-    <p className="text-gray-600 mt-3 max-w-2xl">
-      A simple, structured process designed to reduce time spent searching and improve visibility of relevant funding.
-    </p>
+    <div className="space-y-12">
+      {/* Step 1 */}
+    <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 flex items-center justify-between">
+      <div className="relative md:pl-16">
+        <div className="absolute left-0 w-12 h-12 flex items-center justify-center rounded-xl text-white font-bold main-gradient-bg">
+          1
+        </div>
+        <h3 className="text-lg font-semibold dark-purple-text">Define your criteria</h3>
+        <p className="text-gray-600 mt-2 max-w-xl">
+          Select sectors, opportunity types, region and funding range aligned to your organisation.
+        </p>
+      </div>
 
-    <div className="mt-12 grid md:grid-cols-2 gap-16 items-start">
-      {/* LEFT: Timeline */}
-      <div className="relative">
-        {/* Vertical line */}
-        <div className="absolute left-6 top-0 bottom-0 w-px bg-gray-200 hidden md:block" />
+      {/* Step 2 */}
+    <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 flex items-center justify-between">
+      <div className="relative md:pl-16">
+        <div className="absolute left-0 w-12 h-12 flex items-center justify-center rounded-xl text-white font-bold main-gradient-bg">
+          2
+        </div>
+        <h3 className="text-lg font-semibold dark-purple-text">Structured monitoring</h3>
+        <p className="text-gray-600 mt-2 max-w-xl">
+          Apex continuously reviews relevant funding sources and applies structured filtering based on your profile.
+        </p>
+      </div>
 
-        <div className="space-y-12">
-          {/* Step 1 */}
-          <div className="relative md:pl-16">
-            <div className="absolute left-0 w-12 h-12 flex items-center justify-center rounded-xl text-white font-bold main-gradient-bg">
-              1
+      {/* Step 3 */}
+    <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 flex items-center justify-between">
+      <div className="relative md:pl-16">
+        <div className="absolute left-0 w-12 h-12 flex items-center justify-center rounded-xl text-white font-bold main-gradient-bg">
+          3
+        </div>
+        <h3 className="text-lg font-semibold dark-purple-text">Receive matched alerts</h3>
+        <p className="text-gray-600 mt-2 max-w-xl">
+          When a relevant opportunity is identified, you receive a concise email notification with key information and a direct link.
+        </p>
+      </div>
+
+      {/* Step 4 */}
+    <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 flex items-center justify-between">
+      <div className="relative md:pl-16">
+        <div className="absolute left-0 w-12 h-12 flex items-center justify-center rounded-xl text-white font-bold main-gradient-bg">
+          4
+        </div>
+        <h3 className="text-lg font-semibold dark-purple-text">Review & assess</h3>
+        <p className="text-gray-600 mt-2 max-w-xl">
+          Log into your dashboard to review matched opportunities in a clear format and determine next steps.
+        </p>
+      </div>
+    </div>
+  </div>
+
+ {/* RIGHT: Process Flow Diagram */}
+<div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm">
+  <div className="text-sm font-semibold text-gray-700 mb-6">
+    Process Overview
+  </div>
+
+  <div className="space-y-6">
+
+    {/* Step A */}
+    <div className="flex items-center justify-between">
+      <div className="font-semibold text-gray-900">Preferences Set</div>
+      <span className="text-xs text-gray-500">Industry · Region · Value</span>
+    </div>
+
+    <Arrow />
+
+    {/* Step B */}
+    <div className="flex items-center justify-between">
+      <div className="font-semibold text-gray-900">Monitoring Engine</div>
+      <span className="text-xs text-gray-500">Source review & filtering</span>
+    </div>
+
+    <Arrow />
+
+    {/* Step C */}
+    <div className="flex items-center justify-between">
+      <div className="font-semibold text-gray-900">Email Notification</div>
+      <span className="text-xs text-gray-500">Matched opportunity alert</span>
+    </div>
+
+    <Arrow />
+
+    {/* Step D */}
+    <div className="flex items-center justify-between">
+      <div className="font-semibold text-gray-900">Portal Dashboard</div>
+      <span className="text-xs text-gray-500">Structured review & action</span>
+    </div>
+
+  </div>
+
+  <div className="mt-8 text-xs text-gray-500">
+    Alerts are triggered when new opportunities meet your defined criteria.
+  </div>
+</div>
+
+      {/* Portal preview */}
+      <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6">
+        <div className="flex items-center justify-between">
+          <div className="font-semibold dark-purple-text">Portal view</div>
+          <span className="text-xs text-gray-500">Preview</span>
+        </div>
+
+        <div className="mt-4 space-y-3">
+          {[
+            { title: "Decarbonisation Support Scheme", meta: "UK-wide • £50k–£250k • Deadline 30 Sept" },
+            { title: "Innovation Voucher Fund", meta: "England • £5k–£15k • Deadline 12 Oct" },
+            { title: "Training & Skills Grant", meta: "UK • £2k–£10k • Rolling" },
+          ].map((x) => (
+            <div key={x.title} className="rounded-xl border border-gray-200 p-4 hover:bg-gray-50 transition">
+              <div className="text-sm font-semibold text-gray-900">{x.title}</div>
+              <div className="text-sm text-gray-600 mt-1">{x.meta}</div>
             </div>
-            <h3 className="text-lg font-semibold dark-purple-text">
-              Define your criteria
-            </h3>
-            <p className="text-gray-600 mt-2 max-w-xl">
-              Select sectors, opportunity types, region and funding range aligned to your organisation.
-            </p>
-          </div>
+          ))}
+        </div>
 
-          {/* Step 2 */}
-          <div className="relative md:pl-16">
-            <div className="absolute left-0 w-12 h-12 flex items-center justify-center rounded-xl text-white font-bold main-gradient-bg">
-              2
-            </div>
-            <h3 className="text-lg font-semibold dark-purple-text">
-              Structured monitoring
-            </h3>
-            <p className="text-gray-600 mt-2 max-w-xl">
-              Apex continuously reviews relevant funding sources and applies structured filtering based on your profile.
-            </p>
-          </div>
-
-          {/* Step 3 */}
-          <div className="relative md:pl-16">
-            <div className="absolute left-0 w-12 h-12 flex items-center justify-center rounded-xl text-white font-bold main-gradient-bg">
-              3
-            </div>
-            <h3 className="text-lg font-semibold dark-purple-text">
-              Receive matched alerts
-            </h3>
-            <p className="text-gray-600 mt-2 max-w-xl">
-              When a relevant opportunity is identified, you receive a concise email notification with key information and a direct link.
-            </p>
-          </div>
-
-          {/* Step 4 */}
-          <div className="relative md:pl-16">
-            <div className="absolute left-0 w-12 h-12 flex items-center justify-center rounded-xl text-white font-bold main-gradient-bg">
-              4
-            </div>
-            <h3 className="text-lg font-semibold dark-purple-text">
-              Review &amp; assess
-            </h3>
-            <p className="text-gray-600 mt-2 max-w-xl">
-              Log into your dashboard to review matched opportunities in a clear format and determine next steps.
-            </p>
-          </div>
+        <div className="mt-4 text-xs text-gray-500">
+          Example only. Actual matches depend on your preferences.
         </div>
       </div>
+    </div>
+  </div>
+</div>
 
       {/* RIGHT: Visual panel (fills the whitespace) */}
       <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 shadow-sm">
@@ -403,6 +463,14 @@ function BulletCard({ title, bullets }: { title: string; bullets: string[] }) {
           </li>
         ))}
       </ul>
+    </div>
+  );
+}
+
+function Arrow() {
+  return (
+    <div className="flex justify-center">
+      <div className="w-px h-6 bg-gray-300" />
     </div>
   );
 }
