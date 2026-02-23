@@ -179,7 +179,7 @@ export default function LandingPage() {
   A simple, structured process designed to reduce time spent searching and improve visibility of relevant funding.
 </p>
 
-          <div className="mt-8 grid md:grid-cols-3 gap-6">
+          <div className="mt-8 grid md:grid-cols-2 gap-6">
             <StepCard
               step="1"
               title="Define your criteria"
