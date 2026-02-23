@@ -179,28 +179,56 @@ export default function LandingPage() {
   A simple, structured process designed to reduce time spent searching and improve visibility of relevant funding.
 </p>
 
-          <div className="mt-8 grid md:grid-cols-2 gap-6">
-            <StepCard
-              step="1"
-              title="Define your criteria"
-              text="Select industries, opportunity types, region and value range."
-            />
-            <StepCard
-              step="2"
-              title="Monitoring & filtering"
-              text="Apex reviews available schemes and filters based on your selected industry & preference."
-              />
-            <StepCard
-              step="3"
-              title="Monitoring & filtering"
-              text="Apex reviews available schemes and filters based on your selected industry & preference."
-            />
-            <StepCard
-              step="4"
-              title="Review in your dashboard"
-              text="Matched opportunities appear in a structured format for review."
-            />
-          </div>
+  <div className="mt-12 relative">
+  {/* Vertical line */}
+  <div className="absolute left-6 top-0 bottom-0 w-px bg-gray-200 hidden md:block" />
+
+  <div className="space-y-12">
+    {/* Step 1 */}
+    <div className="relative md:pl-16">
+      <div className="absolute left-0 w-12 h-12 flex items-center justify-center rounded-xl text-white font-bold main-gradient-bg">
+        1
+      </div>
+      <h3 className="text-lg font-semibold dark-purple-text">Define your criteria</h3>
+      <p className="text-gray-600 mt-2 max-w-xl">
+        Select sectors, opportunity types, region and funding range aligned to your organisation.
+      </p>
+    </div>
+
+    {/* Step 2 */}
+    <div className="relative md:pl-16">
+      <div className="absolute left-0 w-12 h-12 flex items-center justify-center rounded-xl text-white font-bold main-gradient-bg">
+        2
+      </div>
+      <h3 className="text-lg font-semibold dark-purple-text">Structured monitoring</h3>
+      <p className="text-gray-600 mt-2 max-w-xl">
+        Apex continuously reviews relevant funding sources and applies structured filtering based on your profile.
+      </p>
+    </div>
+
+    {/* Step 3 */}
+    <div className="relative md:pl-16">
+      <div className="absolute left-0 w-12 h-12 flex items-center justify-center rounded-xl text-white font-bold main-gradient-bg">
+        3
+      </div>
+      <h3 className="text-lg font-semibold dark-purple-text">Receive matched alerts</h3>
+      <p className="text-gray-600 mt-2 max-w-xl">
+        When a relevant opportunity is identified, you receive a concise email notification with key information and a direct link.
+      </p>
+    </div>
+
+    {/* Step 4 */}
+    <div className="relative md:pl-16">
+      <div className="absolute left-0 w-12 h-12 flex items-center justify-center rounded-xl text-white font-bold main-gradient-bg">
+        4
+      </div>
+      <h3 className="text-lg font-semibold dark-purple-text">Review & assess</h3>
+      <p className="text-gray-600 mt-2 max-w-xl">
+        Log into your dashboard to review matched opportunities in a clear format and determine next steps.
+      </p>
+    </div>
+  </div>
+</div>
         </div>
       </section>
 
