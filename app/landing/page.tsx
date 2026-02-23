@@ -7,39 +7,45 @@ export default function LandingPage() {
     <div className="min-h-screen bg-white">
       {/* Top bar / Nav */}
       <header className="bg-white/95 backdrop-blur-md sticky top-0 z-40 border-b border-gray-200">
-  <nav className="container mx-auto px-6 py-3 flex items-center justify-between">
-    <Link href="/landing" className="flex items-center gap-2">
-      <div className="leading-tight">
-        <div className="text-xl font-extrabold secondary-gradient-text">APEX</div>
-        <div className="text-[10px] font-semibold text-gray-500 tracking-widest -mt-1">
-          GRANT SOLUTIONS
-        </div>
-      </div>
-    </Link>
+        <nav className="container mx-auto px-6 py-3 flex items-center justify-between">
+          <Link href="/landing" className="flex items-center gap-2">
+            <div className="leading-tight">
+              <div className="text-xl font-extrabold secondary-gradient-text">APEX</div>
+              <div className="text-[10px] font-semibold text-gray-500 tracking-widest -mt-1">
+                GRANT SOLUTIONS
+              </div>
+            </div>
+          </Link>
 
-    <div className="hidden md:flex items-center gap-6 text-sm text-gray-700">
-      <a href="#how-it-works" className="hover:text-gray-900">How it works</a>
-      <a href="#example" className="hover:text-gray-900">Example</a>
-      <a href="#access" className="hover:text-gray-900">Access</a>
-    </div>
+          <div className="hidden md:flex items-center gap-6 text-sm text-gray-700">
+            <a href="#how-it-works" className="hover:text-gray-900">
+              How it works
+            </a>
+            <a href="#example" className="hover:text-gray-900">
+              Example
+            </a>
+            <a href="#access" className="hover:text-gray-900">
+              Access
+            </a>
+          </div>
 
-    <div className="flex items-center gap-3">
-      <Link
-        href="/login"
-        className="px-4 py-2 rounded-lg border border-gray-200 text-gray-800 font-semibold hover:bg-gray-50 transition"
-      >
-        Login
-      </Link>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/login"
+              className="px-4 py-2 rounded-lg border border-gray-200 text-gray-800 font-semibold hover:bg-gray-50 transition"
+            >
+              Login
+            </Link>
 
-      <Link
-        href="/login"
-        className="px-4 py-2 rounded-lg text-white font-semibold main-gradient-bg hover:opacity-90 transition"
-      >
-        Create account
-      </Link>
-    </div>
-  </nav>
-</header>
+            <Link
+              href="/login"
+              className="px-4 py-2 rounded-lg text-white font-semibold main-gradient-bg hover:opacity-90 transition"
+            >
+              Create account
+            </Link>
+          </div>
+        </nav>
+      </header>
 
       {/* Hero */}
       <section className="bg-white">
@@ -92,8 +98,11 @@ export default function LandingPage() {
               </div>
             </div>
 
-            {/* Example card (calm + structured) */}
-            <div id="example" className="bg-gray-50 border border-gray-200 rounded-2xl p-6 shadow-sm">
+            {/* Example card */}
+            <div
+              id="example"
+              className="bg-gray-50 border border-gray-200 rounded-2xl p-6 shadow-sm"
+            >
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <div className="text-sm font-semibold text-gray-700">Example opportunity</div>
@@ -121,10 +130,8 @@ export default function LandingPage() {
                 upgrades. Requirements and eligibility vary by scheme and region.
               </div>
 
-              <div className="mt-5">
-                <div className="text-xs text-gray-500">
-                  Example only. Actual matches are based on your preferences.
-                </div>
+              <div className="mt-5 text-xs text-gray-500">
+                Example only. Actual matches are based on your preferences.
               </div>
             </div>
           </div>
@@ -132,7 +139,7 @@ export default function LandingPage() {
       </section>
 
       {/* Section: What Apex does */}
-      <section id="access" className="bg-white border-t border-gray-200">
+      <section className="bg-white border-t border-gray-200">
         <div className="container mx-auto px-6 py-12">
           <div className="max-w-4xl">
             <h2 className="text-2xl md:text-3xl font-extrabold dark-purple-text">
@@ -168,160 +175,110 @@ export default function LandingPage() {
         </div>
       </section>
 
-    {/* Section: How it works */}
-<section id="how-it-works" className="bg-white border-t border-gray-200">
-<div className="mt-12 grid gap-10 lg:grid-cols-12 items-start">
-  {/* LEFT: Timeline */}
-  <div className="lg:col-span-7 relative">
-    {/* Vertical line */}
-    <div className="absolute left-6 top-0 bottom-0 w-px bg-gray-200 hidden md:block" />
+      {/* Section: How it works */}
+      <section id="how-it-works" className="bg-white border-t border-gray-200">
+        <div className="container mx-auto px-6 py-12">
+          <div className="max-w-4xl">
+            <h2 className="text-2xl md:text-3xl font-extrabold dark-purple-text">
+              How the Platform Works
+            </h2>
+            <p className="text-gray-600 mt-3 max-w-2xl">
+              A simple, structured process designed to reduce time spent searching and improve
+              visibility of relevant funding.
+            </p>
+          </div>
 
-    <div className="space-y-12">
-      {/* Step 1 */}
-    <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 flex items-center justify-between">
-      <div className="relative md:pl-16">
-        <div className="absolute left-0 w-12 h-12 flex items-center justify-center rounded-xl text-white font-bold main-gradient-bg">
-          1
-        </div>
-        <h3 className="text-lg font-semibold dark-purple-text">Define your criteria</h3>
-        <p className="text-gray-600 mt-2 max-w-xl">
-          Select sectors, opportunity types, region and funding range aligned to your organisation.
-        </p>
-      </div>
+          {/* Two-column layout: timeline + visual */}
+          <div className="mt-10 grid gap-10 lg:grid-cols-12 items-start">
+            {/* LEFT: Timeline */}
+            <div className="lg:col-span-7">
+              <div className="relative bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+                {/* Vertical line */}
+                <div className="absolute left-10 top-8 bottom-8 w-px bg-gray-200 hidden sm:block" />
 
-      {/* Step 2 */}
-    <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 flex items-center justify-between">
-      <div className="relative md:pl-16">
-        <div className="absolute left-0 w-12 h-12 flex items-center justify-center rounded-xl text-white font-bold main-gradient-bg">
-          2
-        </div>
-        <h3 className="text-lg font-semibold dark-purple-text">Structured monitoring</h3>
-        <p className="text-gray-600 mt-2 max-w-xl">
-          Apex continuously reviews relevant funding sources and applies structured filtering based on your profile.
-        </p>
-      </div>
-
-      {/* Step 3 */}
-    <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 flex items-center justify-between">
-      <div className="relative md:pl-16">
-        <div className="absolute left-0 w-12 h-12 flex items-center justify-center rounded-xl text-white font-bold main-gradient-bg">
-          3
-        </div>
-        <h3 className="text-lg font-semibold dark-purple-text">Receive matched alerts</h3>
-        <p className="text-gray-600 mt-2 max-w-xl">
-          When a relevant opportunity is identified, you receive a concise email notification with key information and a direct link.
-        </p>
-      </div>
-
-      {/* Step 4 */}
-    <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 flex items-center justify-between">
-      <div className="relative md:pl-16">
-        <div className="absolute left-0 w-12 h-12 flex items-center justify-center rounded-xl text-white font-bold main-gradient-bg">
-          4
-        </div>
-        <h3 className="text-lg font-semibold dark-purple-text">Review & assess</h3>
-        <p className="text-gray-600 mt-2 max-w-xl">
-          Log into your dashboard to review matched opportunities in a clear format and determine next steps.
-        </p>
-      </div>
-    </div>
-  </div>
-
- {/* RIGHT: Process Flow Diagram */}
-<div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm">
-  <div className="text-sm font-semibold text-gray-700 mb-6">
-    Process Overview
-  </div>
-
-  <div className="space-y-6">
-
-    {/* Step A */}
-    <div className="flex items-center justify-between">
-      <div className="font-semibold text-gray-900">Preferences Set</div>
-      <span className="text-xs text-gray-500">Industry · Region · Value</span>
-    </div>
-
-    <Arrow />
-
-    {/* Step B */}
-    <div className="flex items-center justify-between">
-      <div className="font-semibold text-gray-900">Monitoring Engine</div>
-      <span className="text-xs text-gray-500">Source review & filtering</span>
-    </div>
-
-    <Arrow />
-
-    {/* Step C */}
-    <div className="flex items-center justify-between">
-      <div className="font-semibold text-gray-900">Email Notification</div>
-      <span className="text-xs text-gray-500">Matched opportunity alert</span>
-    </div>
-
-    <Arrow />
-
-    {/* Step D */}
-    <div className="flex items-center justify-between">
-      <div className="font-semibold text-gray-900">Portal Dashboard</div>
-      <span className="text-xs text-gray-500">Structured review & action</span>
-    </div>
-
-  </div>
-
-  <div className="mt-8 text-xs text-gray-500">
-    Alerts are triggered when new opportunities meet your defined criteria.
-  </div>
-</div>
-
-      {/* Portal preview */}
-      <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6">
-        <div className="flex items-center justify-between">
-          <div className="font-semibold dark-purple-text">Portal view</div>
-          <span className="text-xs text-gray-500">Preview</span>
-        </div>
-
-        <div className="mt-4 space-y-3">
-          {[
-            { title: "Decarbonisation Support Scheme", meta: "UK-wide • £50k–£250k • Deadline 30 Sept" },
-            { title: "Innovation Voucher Fund", meta: "England • £5k–£15k • Deadline 12 Oct" },
-            { title: "Training & Skills Grant", meta: "UK • £2k–£10k • Rolling" },
-          ].map((x) => (
-            <div key={x.title} className="rounded-xl border border-gray-200 p-4 hover:bg-gray-50 transition">
-              <div className="text-sm font-semibold text-gray-900">{x.title}</div>
-              <div className="text-sm text-gray-600 mt-1">{x.meta}</div>
+                <div className="space-y-10">
+                  <TimelineStep
+                    step="1"
+                    title="Define your criteria"
+                    text="Select sectors, opportunity types, region and funding range aligned to your organisation."
+                  />
+                  <TimelineStep
+                    step="2"
+                    title="Structured monitoring"
+                    text="Apex reviews relevant funding sources and applies structured filtering based on your profile."
+                  />
+                  <TimelineStep
+                    step="3"
+                    title="Receive matched alerts"
+                    text="When a relevant opportunity is identified, you receive a concise email notification with key information and a direct link."
+                  />
+                  <TimelineStep
+                    step="4"
+                    title="Review & assess"
+                    text="Log into your dashboard to review matched opportunities in a clear format and determine next steps."
+                  />
+                </div>
+              </div>
             </div>
-          ))}
-        </div>
 
-        <div className="mt-4 text-xs text-gray-500">
-          Example only. Actual matches depend on your preferences.
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+            {/* RIGHT: Visual panel */}
+            <div className="lg:col-span-5 space-y-6">
+              {/* Process overview */}
+              <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+                <div className="text-sm font-semibold text-gray-700">Process overview</div>
 
-      {/* RIGHT: Visual panel (fills the whitespace) */}
-      <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 shadow-sm">
-        <div className="text-sm font-semibold text-gray-700">
-          Example dashboard
-        </div>
+                <div className="mt-5 space-y-5">
+                  <FlowRow left="Preferences set" right="Industry · Region · Value" />
+                  <Arrow />
+                  <FlowRow left="Monitoring engine" right="Source review & filtering" />
+                  <Arrow />
+                  <FlowRow left="Email notification" right="Matched opportunity alert" />
+                  <Arrow />
+                  <FlowRow left="Portal dashboard" right="Structured review & action" />
+                </div>
 
-        <div className="mt-3 rounded-xl bg-white border border-gray-200 p-4">
-          <div className="h-44 rounded-lg bg-gray-100" />
-          <div className="mt-4 space-y-2">
-            <div className="h-3 w-3/4 bg-gray-100 rounded" />
-            <div className="h-3 w-2/3 bg-gray-100 rounded" />
-            <div className="h-3 w-1/2 bg-gray-100 rounded" />
+                <div className="mt-6 text-xs text-gray-500">
+                  Alerts are triggered when new opportunities meet your defined criteria.
+                </div>
+              </div>
+
+              {/* Portal preview */}
+              <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6">
+                <div className="flex items-center justify-between">
+                  <div className="font-semibold dark-purple-text">Portal view</div>
+                  <span className="text-xs text-gray-500">Preview</span>
+                </div>
+
+                <div className="mt-4 space-y-3">
+                  {[
+                    {
+                      title: "Decarbonisation Support Scheme",
+                      meta: "UK-wide • £50k–£250k • Deadline 30 Sept",
+                    },
+                    {
+                      title: "Innovation Voucher Fund",
+                      meta: "England • £5k–£15k • Deadline 12 Oct",
+                    },
+                    { title: "Training & Skills Grant", meta: "UK • £2k–£10k • Rolling" },
+                  ].map((x) => (
+                    <div
+                      key={x.title}
+                      className="rounded-xl border border-gray-200 p-4 hover:bg-gray-50 transition"
+                    >
+                      <div className="text-sm font-semibold text-gray-900">{x.title}</div>
+                      <div className="text-sm text-gray-600 mt-1">{x.meta}</div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-4 text-xs text-gray-500">
+                  Example only. Actual matches depend on your preferences.
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-
-        <div className="mt-4 text-sm text-gray-600">
-          A clean summary view of matched opportunities, with key details and next actions.
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+      </section>
 
       {/* Section: Designed for */}
       <section className="bg-gray-50 border-t border-gray-200">
@@ -360,7 +317,7 @@ export default function LandingPage() {
       </section>
 
       {/* Section: Access */}
-      <section className="bg-white border-t border-gray-200">
+      <section id="access" className="bg-white border-t border-gray-200">
         <div className="container mx-auto px-6 py-12">
           <div className="max-w-4xl">
             <h2 className="text-2xl md:text-3xl font-extrabold dark-purple-text">
@@ -395,58 +352,54 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="border-t border-gray-200 bg-white">
-  <div className="container mx-auto px-6 py-10">
-    <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-      <div>
-        <div className="text-lg font-extrabold secondary-gradient-text">APEX</div>
-        <div className="text-[10px] font-semibold text-gray-500 tracking-widest -mt-1">
-          GRANT SOLUTIONS
-        </div>
-        <div className="text-sm text-gray-600 mt-3 max-w-md leading-relaxed">
-          A structured platform to help UK businesses review relevant funding opportunities more efficiently.
-        </div>
-      </div>
+        <div className="container mx-auto px-6 py-10">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div>
+              <div className="text-lg font-extrabold secondary-gradient-text">APEX</div>
+              <div className="text-[10px] font-semibold text-gray-500 tracking-widest -mt-1">
+                GRANT SOLUTIONS
+              </div>
+              <div className="text-sm text-gray-600 mt-3 max-w-md leading-relaxed">
+                A structured platform to help UK businesses review relevant funding opportunities
+                more efficiently.
+              </div>
+            </div>
 
-      <div className="grid grid-cols-2 gap-x-10 gap-y-3 text-sm">
-        <a href="#how-it-works" className="text-gray-600 hover:text-gray-900">How it works</a>
-        <a href="#example" className="text-gray-600 hover:text-gray-900">Example</a>
-        <a href="#access" className="text-gray-600 hover:text-gray-900">Access</a>
-        <Link href="/login" className="text-gray-600 hover:text-gray-900">Login</Link>
-      </div>
-    </div>
+            <div className="grid grid-cols-2 gap-x-10 gap-y-3 text-sm">
+              <a href="#how-it-works" className="text-gray-600 hover:text-gray-900">
+                How it works
+              </a>
+              <a href="#example" className="text-gray-600 hover:text-gray-900">
+                Example
+              </a>
+              <a href="#access" className="text-gray-600 hover:text-gray-900">
+                Access
+              </a>
+              <Link href="/login" className="text-gray-600 hover:text-gray-900">
+                Login
+              </Link>
+            </div>
+          </div>
 
-    <div className="mt-8 pt-6 border-t border-gray-200 flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs text-gray-500">
-      <div>© {new Date().getFullYear()} Apex Grant Solutions. All rights reserved.</div>
-      <div>Information shown is for demonstration purposes and may not reflect live opportunities.</div>
-    </div>
-  </div>
-</footer>
+          <div className="mt-8 pt-6 border-t border-gray-200 flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs text-gray-500">
+            <div>© {new Date().getFullYear()} Apex Grant Solutions. All rights reserved.</div>
+            <div>
+              Information shown is for demonstration purposes and may not reflect live opportunities.
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
+
+/* ---------- Components ---------- */
 
 function InfoBox({ label, value }: { label: string; value: string }) {
   return (
     <div className="bg-white border border-gray-200 rounded-xl p-4">
       <div className="text-xs text-gray-500 uppercase tracking-wider font-semibold">{label}</div>
       <div className="mt-1 text-base font-bold text-gray-900">{value}</div>
-    </div>
-  );
-}
-
-function StepCard({ step, title, text }: { step: string; title: string; text: string }) {
-  return (
-    <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-      <div className="flex items-center gap-3">
-        <div
-          className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-extrabold"
-          style={{ background: "linear-gradient(90deg, #F05A28, #7B1E5A)" }}
-        >
-          {step}
-        </div>
-        <div className="text-lg font-extrabold dark-purple-text">{title}</div>
-      </div>
-      <div className="mt-3 text-gray-700 leading-relaxed">{text}</div>
     </div>
   );
 }
@@ -463,6 +416,40 @@ function BulletCard({ title, bullets }: { title: string; bullets: string[] }) {
           </li>
         ))}
       </ul>
+    </div>
+  );
+}
+
+function TimelineStep({
+  step,
+  title,
+  text,
+}: {
+  step: string;
+  title: string;
+  text: string;
+}) {
+  return (
+    <div className="relative pl-14 sm:pl-20">
+      <div className="absolute left-0 top-0">
+        <div className="w-12 h-12 flex items-center justify-center rounded-xl text-white font-bold main-gradient-bg">
+          {step}
+        </div>
+      </div>
+
+      <div className="pt-1">
+        <div className="text-lg font-semibold dark-purple-text">{title}</div>
+        <div className="mt-2 text-gray-600 leading-relaxed">{text}</div>
+      </div>
+    </div>
+  );
+}
+
+function FlowRow({ left, right }: { left: string; right: string }) {
+  return (
+    <div className="flex items-center justify-between gap-4">
+      <div className="font-semibold text-gray-900">{left}</div>
+      <div className="text-xs text-gray-500">{right}</div>
     </div>
   );
 }
