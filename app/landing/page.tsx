@@ -175,6 +175,10 @@ export default function LandingPage() {
             How the Platform Works
           </h2>
 
+<p className="text-gray-600 mt-3 max-w-2xl">
+  A simple, structured process designed to reduce time spent searching and improve visibility of relevant funding.
+</p>
+
           <div className="mt-8 grid md:grid-cols-3 gap-6">
             <StepCard
               step="1"
@@ -185,9 +189,14 @@ export default function LandingPage() {
               step="2"
               title="Monitoring & filtering"
               text="Apex reviews available schemes and filters based on your selected industry & preference."
-            />
+              />
             <StepCard
               step="3"
+              title="Monitoring & filtering"
+              text="Apex reviews available schemes and filters based on your selected industry & preference."
+            />
+            <StepCard
+              step="4"
               title="Review in your dashboard"
               text="Matched opportunities appear in a structured format for review."
             />
