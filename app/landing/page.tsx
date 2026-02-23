@@ -168,69 +168,100 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Section: How it works */}
-      <section id="how-it-works" className="bg-white border-t border-gray-200">
-        <div className="container mx-auto px-6 py-12">
-          <h2 className="text-2xl md:text-3xl font-extrabold dark-purple-text">
-            How the Platform Works
-          </h2>
+    {/* Section: How it works */}
+<section id="how-it-works" className="bg-white border-t border-gray-200">
+  <div className="container mx-auto px-6 py-12">
+    <h2 className="text-2xl md:text-3xl font-extrabold dark-purple-text">
+      How the Platform Works
+    </h2>
 
-<p className="text-gray-600 mt-3 max-w-2xl">
-  A simple, structured process designed to reduce time spent searching and improve visibility of relevant funding.
-</p>
+    <p className="text-gray-600 mt-3 max-w-2xl">
+      A simple, structured process designed to reduce time spent searching and improve visibility of relevant funding.
+    </p>
 
-  <div className="mt-12 relative">
-  {/* Vertical line */}
-  <div className="absolute left-6 top-0 bottom-0 w-px bg-gray-200 hidden md:block" />
+    <div className="mt-12 grid md:grid-cols-2 gap-16 items-start">
+      {/* LEFT: Timeline */}
+      <div className="relative">
+        {/* Vertical line */}
+        <div className="absolute left-6 top-0 bottom-0 w-px bg-gray-200 hidden md:block" />
 
-  <div className="space-y-12">
-    {/* Step 1 */}
-    <div className="relative md:pl-16">
-      <div className="absolute left-0 w-12 h-12 flex items-center justify-center rounded-xl text-white font-bold main-gradient-bg">
-        1
+        <div className="space-y-12">
+          {/* Step 1 */}
+          <div className="relative md:pl-16">
+            <div className="absolute left-0 w-12 h-12 flex items-center justify-center rounded-xl text-white font-bold main-gradient-bg">
+              1
+            </div>
+            <h3 className="text-lg font-semibold dark-purple-text">
+              Define your criteria
+            </h3>
+            <p className="text-gray-600 mt-2 max-w-xl">
+              Select sectors, opportunity types, region and funding range aligned to your organisation.
+            </p>
+          </div>
+
+          {/* Step 2 */}
+          <div className="relative md:pl-16">
+            <div className="absolute left-0 w-12 h-12 flex items-center justify-center rounded-xl text-white font-bold main-gradient-bg">
+              2
+            </div>
+            <h3 className="text-lg font-semibold dark-purple-text">
+              Structured monitoring
+            </h3>
+            <p className="text-gray-600 mt-2 max-w-xl">
+              Apex continuously reviews relevant funding sources and applies structured filtering based on your profile.
+            </p>
+          </div>
+
+          {/* Step 3 */}
+          <div className="relative md:pl-16">
+            <div className="absolute left-0 w-12 h-12 flex items-center justify-center rounded-xl text-white font-bold main-gradient-bg">
+              3
+            </div>
+            <h3 className="text-lg font-semibold dark-purple-text">
+              Receive matched alerts
+            </h3>
+            <p className="text-gray-600 mt-2 max-w-xl">
+              When a relevant opportunity is identified, you receive a concise email notification with key information and a direct link.
+            </p>
+          </div>
+
+          {/* Step 4 */}
+          <div className="relative md:pl-16">
+            <div className="absolute left-0 w-12 h-12 flex items-center justify-center rounded-xl text-white font-bold main-gradient-bg">
+              4
+            </div>
+            <h3 className="text-lg font-semibold dark-purple-text">
+              Review &amp; assess
+            </h3>
+            <p className="text-gray-600 mt-2 max-w-xl">
+              Log into your dashboard to review matched opportunities in a clear format and determine next steps.
+            </p>
+          </div>
+        </div>
       </div>
-      <h3 className="text-lg font-semibold dark-purple-text">Define your criteria</h3>
-      <p className="text-gray-600 mt-2 max-w-xl">
-        Select sectors, opportunity types, region and funding range aligned to your organisation.
-      </p>
-    </div>
 
-    {/* Step 2 */}
-    <div className="relative md:pl-16">
-      <div className="absolute left-0 w-12 h-12 flex items-center justify-center rounded-xl text-white font-bold main-gradient-bg">
-        2
-      </div>
-      <h3 className="text-lg font-semibold dark-purple-text">Structured monitoring</h3>
-      <p className="text-gray-600 mt-2 max-w-xl">
-        Apex continuously reviews relevant funding sources and applies structured filtering based on your profile.
-      </p>
-    </div>
+      {/* RIGHT: Visual panel (fills the whitespace) */}
+      <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 shadow-sm">
+        <div className="text-sm font-semibold text-gray-700">
+          Example dashboard
+        </div>
 
-    {/* Step 3 */}
-    <div className="relative md:pl-16">
-      <div className="absolute left-0 w-12 h-12 flex items-center justify-center rounded-xl text-white font-bold main-gradient-bg">
-        3
-      </div>
-      <h3 className="text-lg font-semibold dark-purple-text">Receive matched alerts</h3>
-      <p className="text-gray-600 mt-2 max-w-xl">
-        When a relevant opportunity is identified, you receive a concise email notification with key information and a direct link.
-      </p>
-    </div>
+        <div className="mt-3 rounded-xl bg-white border border-gray-200 p-4">
+          <div className="h-44 rounded-lg bg-gray-100" />
+          <div className="mt-4 space-y-2">
+            <div className="h-3 w-3/4 bg-gray-100 rounded" />
+            <div className="h-3 w-2/3 bg-gray-100 rounded" />
+            <div className="h-3 w-1/2 bg-gray-100 rounded" />
+          </div>
+        </div>
 
-    {/* Step 4 */}
-    <div className="relative md:pl-16">
-      <div className="absolute left-0 w-12 h-12 flex items-center justify-center rounded-xl text-white font-bold main-gradient-bg">
-        4
+        <div className="mt-4 text-sm text-gray-600">
+          A clean summary view of matched opportunities, with key details and next actions.
+        </div>
       </div>
-      <h3 className="text-lg font-semibold dark-purple-text">Review & assess</h3>
-      <p className="text-gray-600 mt-2 max-w-xl">
-        Log into your dashboard to review matched opportunities in a clear format and determine next steps.
-      </p>
     </div>
   </div>
-</div>
-        </div>
-      </section>
+</section>
 
       {/* Section: Designed for */}
       <section className="bg-gray-50 border-t border-gray-200">
