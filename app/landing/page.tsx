@@ -1,3 +1,5 @@
+git add .
+git commit -m "Save current landing page before replacement"
 "use client";
 
 import Link from "next/link";
