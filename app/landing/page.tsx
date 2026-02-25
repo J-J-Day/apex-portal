@@ -91,13 +91,19 @@ export default function LandingPage() {
               href="#challenge"
               className="hover:text-slate-900 transition-colors"
             >
-              The Challenge
+              The challenge
             </SmoothAnchor>
             <SmoothAnchor
               href="#sources"
               className="hover:text-slate-900 transition-colors"
             >
               Coverage
+            </SmoothAnchor>
+            <SmoothAnchor
+              href="#faq"
+              className="hover:text-slate-900 transition-colors"
+            >
+              FAQ
             </SmoothAnchor>
           </div>
 
@@ -128,9 +134,15 @@ export default function LandingPage() {
               </h1>
 
               <p className="mt-6 text-base md:text-lg text-slate-600 leading-relaxed max-w-xl">
-                Apex monitors national and regional funding schemes and filters them according to
-                your sector, region and funding criteria — so you can focus on reviewing relevant
-                opportunities, not searching for them.
+                Funding schemes are published across many national and regional sources, and
+                application windows can be easy to miss. Apex helps you maintain consistent
+                visibility by matching opportunities to your sector, region and funding criteria —
+                so you can focus on decisions, not searching.
+              </p>
+
+              <p className="mt-4 text-sm text-slate-500 max-w-xl leading-relaxed">
+                Built for teams without a dedicated grant research function who still need to stay
+                ahead of deadlines.
               </p>
 
               <div className="mt-10 flex flex-col sm:flex-row gap-3">
@@ -144,16 +156,31 @@ export default function LandingPage() {
                   href="#how-it-works"
                   className="inline-flex items-center justify-center px-6 py-3 rounded-lg border border-slate-200 text-slate-800 font-semibold hover:bg-slate-50 transition"
                 >
-                  How it works
+                  See how it works
                 </SmoothAnchor>
               </div>
 
               <div className="mt-6 text-sm text-slate-500 italic">
-                Currently available at no cost during phased rollout.
+                Currently available at no cost during phased rollout. No card required.
+              </div>
+
+              <div className="mt-6 flex flex-wrap gap-2 text-xs text-slate-600">
+                <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1">
+                  <span className="h-1.5 w-1.5 rounded-full bg-orange-500" />
+                  Preferences can be updated anytime
+                </span>
+                <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1">
+                  <span className="h-1.5 w-1.5 rounded-full bg-orange-500" />
+                  Control alert frequency
+                </span>
+                <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1">
+                  <span className="h-1.5 w-1.5 rounded-full bg-orange-500" />
+                  Pause notifications when needed
+                </span>
               </div>
             </div>
 
-            {/* Example Briefing Card */}
+            {/* Example Briefing Card (kept intentionally “briefing”, not portal UI) */}
             <div
               id="example"
               className="bg-slate-50 border border-slate-200 rounded-2xl p-8 shadow-sm"
@@ -166,6 +193,9 @@ export default function LandingPage() {
                   <div className="text-xl font-extrabold dark-purple-text mt-1 leading-tight">
                     Decarbonisation Support Scheme
                   </div>
+                  <div className="mt-2 text-sm text-slate-600 leading-relaxed">
+                    A structured snapshot of key details to help you quickly judge suitability.
+                  </div>
                 </div>
                 <span className="text-xs font-bold px-3 py-1 rounded-full bg-white border border-slate-200 text-slate-600 shadow-sm">
                   UK
@@ -175,7 +205,7 @@ export default function LandingPage() {
               <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="bg-white border border-slate-100 rounded-xl p-4">
                   <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest mb-1">
-                    Funding value
+                    Funding range
                   </div>
                   <div className="text-lg font-bold text-slate-900">
                     £50,000 – £250,000
@@ -191,9 +221,34 @@ export default function LandingPage() {
                 </div>
               </div>
 
+              <div className="mt-6 grid grid-cols-1 gap-3">
+                <div className="bg-white border border-slate-100 rounded-xl p-4">
+                  <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest mb-1">
+                    Typical information included
+                  </div>
+                  <ul className="mt-2 space-y-2 text-sm text-slate-600">
+                    {[
+                      "Eligibility overview and key requirements",
+                      "Geographic scope and applicable sectors",
+                      "Evidence / documentation commonly required",
+                      "Direct source links and deadline tracking",
+                    ].map((x) => (
+                      <li key={x} className="flex items-start gap-2">
+                        <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-slate-300 shrink-0" />
+                        <span>{x}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
               <div className="mt-8 border-t border-slate-200 pt-6 text-sm text-slate-600 leading-relaxed">
                 Supports eligible businesses delivering energy reduction measures and low-carbon
-                upgrades.
+                upgrades. Requirements vary by scheme, region and funding body.
+              </div>
+
+              <div className="mt-4 text-xs text-slate-500">
+                Example for illustration. Matches are based on your criteria and may differ.
               </div>
             </div>
           </div>
@@ -208,11 +263,11 @@ export default function LandingPage() {
               Process
             </span>
             <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
-              Identify Your Next Opportunity
+              Stay Informed Without the Weekly Searching
             </h2>
             <p className="text-slate-600 mt-4 max-w-xl mx-auto text-base md:text-lg leading-relaxed">
-              A professional path to discovering relevant grants and support schemes without the
-              need for manual searching.
+              A straightforward way to maintain visibility across relevant funding channels, so you
+              can act early and avoid missed windows.
             </p>
           </div>
 
@@ -221,23 +276,23 @@ export default function LandingPage() {
             <div className="space-y-16 relative">
               <TimelineStep
                 step={1}
-                title="Define your search"
-                text="Select the specific sectors, regions, and funding types that align with your business requirements."
+                title="Set your criteria"
+                text="Choose your sectors, region(s), funding types and an approximate value range."
               />
               <TimelineStep
                 step={2}
-                title="Targeted matching"
-                text="We review national and regional sources to identify opportunities that fit your defined profile."
+                title="We review verified sources"
+                text="We track central government, Innovate UK, local authorities and other verified sources relevant to your criteria."
               />
               <TimelineStep
                 step={3}
-                title="Receive direct alerts"
-                text="Get notified when suitable schemes or application windows become available."
+                title="Receive timely alerts"
+                text="When suitable schemes open or deadlines approach, you receive a concise notification with key details and source links."
               />
               <TimelineStep
                 step={4}
-                title="Review and proceed"
-                text="Access clear summaries of each match to determine which funding opportunities to pursue."
+                title="Review and decide"
+                text="Assess each match quickly and decide whether to progress, without trawling multiple portals."
               />
             </div>
           </div>
@@ -254,7 +309,7 @@ export default function LandingPage() {
               </h2>
               <p className="text-slate-600 mt-4 text-base md:text-lg max-w-3xl mx-auto leading-relaxed">
                 Funding opportunities are often missed not because they are unavailable — but because
-                they are difficult to track consistently.
+                they are difficult to track consistently across fragmented sources.
               </p>
             </div>
 
@@ -265,12 +320,12 @@ export default function LandingPage() {
                 </h3>
                 <ul className="space-y-5 w-full max-w-md">
                   {[
-                    "Disjointed monitoring of multiple regional and national portals",
-                    "Inefficient manual checking of various source websites",
-                    "Inconsistent alerts leading to delayed awareness",
-                    "Resources exhausted on manual sorting and filtering",
-                    "Critical deadlines missed due to administrative oversight",
-                    "Commercial opportunities lost through fragmented visibility",
+                    "Disjointed monitoring of national and regional portals",
+                    "Time lost re-checking sources and interpreting criteria",
+                    "Inconsistent alerts and delayed awareness",
+                    "Manual sorting, filtering and duplication",
+                    "Deadlines missed due to administrative overload",
+                    "Opportunities lost through limited visibility",
                   ].map((item, i) => (
                     <li key={i} className="flex items-start gap-3 text-left">
                       <span className="h-1.5 w-1.5 rounded-full bg-slate-300 mt-1.5 flex-shrink-0" />
@@ -286,12 +341,12 @@ export default function LandingPage() {
                 </h3>
                 <ul className="space-y-5 w-full max-w-md">
                   {[
-                    "One place to review relevant funding sources",
-                    "Clear visibility based on your sector and region",
-                    "Timely notification of suitable schemes and windows",
-                    "Clear oversight of critical application dates",
-                    "Significant reduction in manual tracking",
-                    "Greater confidence that relevant opportunities are identified",
+                    "One place to review relevant sources",
+                    "Visibility aligned to your sector and region",
+                    "Notifications when suitable windows open",
+                    "Clear oversight of deadlines and key dates",
+                    "Reduced reliance on manual tracking",
+                    "Greater confidence you’re seeing relevant opportunities early",
                   ].map((item, i) => (
                     <li key={i} className="flex items-start gap-3 text-left">
                       <span className="h-1.5 w-1.5 rounded-full bg-orange-500 mt-1.5 flex-shrink-0" />
@@ -304,9 +359,9 @@ export default function LandingPage() {
               </div>
             </div>
 
-            {/* Optional mini-bridge line to next section */}
             <div className="mt-16 text-center text-sm text-slate-500">
-              Consistent visibility reduces the risk of missed opportunities and supports more confident commercial decisions.
+              Better visibility reduces the risk of missed opportunities and supports more confident
+              commercial planning.
             </div>
           </div>
         </div>
@@ -318,20 +373,21 @@ export default function LandingPage() {
           <div className="mx-auto max-w-6xl">
             <div className="text-center mb-16">
               <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">
-                Comprehensive UK Funding Coverage
+                Reliable UK Funding Coverage
               </h2>
               <p className="text-slate-600 mt-4 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
-                We review and track verified funding sources across the UK to provide reliable, up-to-date information.
+                We track verified funding channels across the UK to reduce the chance of missed
+                windows and overlooked deadlines.
               </p>
             </div>
 
-            <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-6 mb-16">
+            <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-6 mb-12">
               {[
                 "Gov.uk Portals",
                 "Innovate UK",
                 "Local Council Websites",
-                "Major News Outlets",
                 "Official Publications",
+                "Verified Sector Sources",
               ].map((source) => (
                 <div key={source} className="flex items-center gap-2">
                   <svg
@@ -354,10 +410,11 @@ export default function LandingPage() {
               ))}
             </div>
 
-            <div className="text-center">
-              <p className="text-slate-600 text-base leading-relaxed max-w-3xl mx-auto italic">
-                Funding opportunities are frequently overlooked due to fragmented publication across national
-                and regional sources. Apex was established to provide structured visibility and reduce that risk.
+            <div className="mx-auto max-w-3xl text-center">
+              <p className="text-slate-600 text-base leading-relaxed">
+                Many schemes are published across different channels with varying levels of clarity.
+                Apex provides structured visibility by filtering against your criteria and highlighting
+                key deadlines, so you can assess suitability faster.
               </p>
             </div>
           </div>
@@ -369,29 +426,30 @@ export default function LandingPage() {
         <div className="container mx-auto px-6">
           <div className="mx-auto max-w-5xl text-center">
             <h2 className="text-2xl md:text-3xl font-extrabold dark-purple-text tracking-tight mb-8">
-              Designed for Growing UK Businesses
+              Designed for UK SMEs Who Need Clarity
             </h2>
             <p className="text-slate-600 leading-relaxed text-base md:text-lg mb-16">
-              Apex is suited for organisations that want a clearer view of what funding may be relevant without manual searching.
+              For owners, commercial teams and operations leads who want consistent oversight of
+              funding opportunities — without dedicating hours each week to manual checks.
             </p>
 
             <div className="grid md:grid-cols-2 gap-8 text-left">
               <BulletCard
                 title="Typical users"
                 bullets={[
-                  "SMEs seeking capital funding",
-                  "Businesses exploring sustainability",
-                  "Organisations looking for innovation support",
+                  "SMEs seeking capital funding and support schemes",
+                  "Construction, property and retrofit businesses",
+                  "Organisations exploring sustainability and decarbonisation",
                   "Teams without dedicated grant research resources",
                 ]}
               />
               <BulletCard
                 title="What you can configure"
                 bullets={[
-                  "Industries and opportunity types",
-                  "Region and value range",
-                  "Optional company linking (not required)",
-                  "Preferences can be updated any time",
+                  "Sectors and opportunity types",
+                  "Region(s) and value range",
+                  "Notification preferences",
+                  "Criteria can be updated at any time",
                 ]}
               />
             </div>
@@ -399,7 +457,50 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Final CTA (bg: slate-50) */}
+      {/* FAQ (bg: slate-50) */}
+      <section id="faq" className="bg-slate-50 py-24">
+        <div className="container mx-auto px-6">
+          <div className="mx-auto max-w-4xl">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">
+                Frequently Asked Questions
+              </h2>
+              <p className="text-slate-600 mt-4 text-base md:text-lg leading-relaxed">
+                Clear answers to the common questions before creating an account.
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <FaqItem
+                q="Do you help write applications?"
+                a="Apex focuses on identifying and surfacing relevant opportunities with clear, structured information. It does not submit applications on your behalf."
+              />
+              <FaqItem
+                q="Will I be spammed with alerts?"
+                a="No. Alerts are tied to your criteria, and you control notification preferences. You can pause or update criteria any time."
+              />
+              <FaqItem
+                q="Is this only for grants?"
+                a="Apex may include a range of funding opportunities and support schemes depending on availability and your selected criteria."
+              />
+              <FaqItem
+                q="How do you decide what is relevant?"
+                a="Matches are based on the criteria you set — such as sector, region and funding type — and filtered to help reduce irrelevant noise."
+              />
+              <FaqItem
+                q="Is there a cost to sign up?"
+                a="Apex is currently available at no cost during phased rollout. Pricing may be introduced after testing and rollout."
+              />
+              <FaqItem
+                q="Can I change my criteria later?"
+                a="Yes. Preferences are designed to be flexible and can be updated at any time."
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA (bg: slate-50 kept for a clean close) */}
       <section className="bg-slate-50 py-24">
         <div className="container mx-auto px-6">
           <div className="mx-auto max-w-6xl">
@@ -409,7 +510,11 @@ export default function LandingPage() {
                   Ready to set your criteria?
                 </div>
                 <div className="text-slate-600 mt-2 leading-relaxed">
-                  Create an account to start receiving matched alerts aligned with your industry and region.
+                  Create an account to start receiving matched alerts aligned with your sector and
+                  region — and reduce the risk of missed opportunities.
+                </div>
+                <div className="mt-4 text-sm text-slate-500">
+                  No card required • Update preferences anytime • Control alert frequency
                 </div>
               </div>
 
@@ -424,7 +529,7 @@ export default function LandingPage() {
                   href="#challenge"
                   className="inline-flex items-center justify-center px-10 py-4 rounded-lg border border-slate-200 text-slate-800 font-semibold hover:bg-slate-50 transition text-center text-lg"
                 >
-                  Learn more
+                  Revisit the challenge
                 </SmoothAnchor>
               </div>
             </div>
@@ -444,8 +549,8 @@ export default function LandingPage() {
                 GRANT SOLUTIONS
               </div>
               <div className="text-sm text-slate-500 mt-6 max-w-sm leading-relaxed">
-                A professional monitoring service helping UK businesses identify relevant funding
-                opportunities with consistency and confidence.
+                A professional monitoring service helping UK businesses maintain visibility across
+                relevant funding channels with consistency and confidence.
               </div>
             </div>
 
@@ -454,13 +559,19 @@ export default function LandingPage() {
                 How it works
               </SmoothAnchor>
               <SmoothAnchor href="#challenge" className="hover:text-slate-900">
-                Challenge
+                The challenge
               </SmoothAnchor>
               <SmoothAnchor href="#sources" className="hover:text-slate-900">
                 Coverage
               </SmoothAnchor>
+              <SmoothAnchor href="#faq" className="hover:text-slate-900">
+                FAQ
+              </SmoothAnchor>
               <Link href="/login" className="hover:text-slate-900">
                 Login
+              </Link>
+              <Link href="/login" className="hover:text-slate-900">
+                Create account
               </Link>
             </div>
           </div>
@@ -512,6 +623,15 @@ function TimelineStep({
       <p className="text-slate-600 mt-2 text-sm md:text-base leading-relaxed max-w-2xl font-medium">
         {text}
       </p>
+    </div>
+  );
+}
+
+function FaqItem({ q, a }: { q: string; a: string }) {
+  return (
+    <div className="bg-white border border-slate-200 rounded-2xl p-6">
+      <div className="font-semibold text-slate-900">{q}</div>
+      <div className="text-slate-600 mt-2 leading-relaxed">{a}</div>
     </div>
   );
 }
