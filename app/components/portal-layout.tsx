@@ -1,0 +1,113 @@
+"use client";
+
+import React from "react";
+import Link from "next/link";
+
+type PortalLayoutProps = {
+  children: React.ReactNode;
+  title?: string;
+  subtitle?: string;
+};
+
+const navItems = [
+  { label: "Dashboard", href: "/" },
+  { label: "Opportunities", href: "/opportunities" },
+  { label: "Saved", href: "/saved" },
+  { label: "Criteria", href: "/preferences" },
+  { label: "Alerts", href: "/preferences" },
+  { label: "Account", href: "/link-company" },
+];
+
+export default function PortalLayout({
+  children,
+  title = "Dashboard",
+  subtitle = "Overview of opportunities matched to your criteria.",
+}: PortalLayoutProps) {
+  return (
+    <div className="min-h-screen bg-slate-50 text-slate-900">
+      <div className="flex min-h-screen">
+        <aside className="hidden md:flex md:w-64 lg:w-72 flex-col border-r border-slate-200 bg-white">
+          <div className="border-b border-slate-200 px-6 py-5">
+            <Link href="/" className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-sm font-bold text-white">
+                A
+              </div>
+              <div>
+                <div className="text-lg font-bold text-slate-900">Apex</div>
+                <div className="text-xs font-medium uppercase tracking-wider text-slate-500">
+                  Grant Solutions
+                </div>
+              </div>
+            </Link>
+          </div>
+
+          <nav className="flex-1 px-4 py-6">
+            <div className="space-y-1">
+              {navItems.map((item) => (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className="flex items-center rounded-xl px-4 py-3 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+          </nav>
+
+          <div className="border-t border-slate-200 px-4 py-4">
+            <div className="rounded-xl bg-slate-50 px-4 py-3">
+              <div className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                Status
+              </div>
+              <div className="mt-1 text-sm font-medium text-slate-700">
+                Rollout access active
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <div className="flex min-h-screen flex-1 flex-col">
+          <header className="border-b border-slate-200 bg-white">
+            <div className="flex items-center justify-between px-6 py-4 lg:px-8">
+              <div>
+                <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+                  {title}
+                </h1>
+                <p className="mt-1 text-sm text-slate-600">{subtitle}</p>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <div className="hidden sm:block text-sm text-slate-500">
+                  Jacob Day
+                </div>
+                <Link
+                  href="/login"
+                  className="rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+                >
+                  Sign out
+                </Link>
+              </div>
+            </div>
+          </header>
+
+          <div className="border-b border-slate-200 bg-white px-4 py-3 md:hidden">
+            <div className="flex gap-2 overflow-x-auto">
+              {navItems.map((item) => (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className="whitespace-nowrap rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-600"
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <main className="flex-1 px-6 py-8 lg:px-8">{children}</main>
+        </div>
+      </div>
+    </div>
+  );
+}
