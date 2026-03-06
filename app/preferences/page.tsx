@@ -1,5 +1,6 @@
 "use client";
 
+import PortalLayout from "../components/portal-layout";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../lib/supabase";
@@ -43,7 +44,6 @@ export default function PreferencesPage() {
   const [fundingTypes, setFundingTypes] = useState<string[]>([]);
   const [region, setRegion] = useState<string>("UK-wide");
 
-  // 0 = no min / no max
   const [minAmount, setMinAmount] = useState<string>("0");
   const [maxAmount, setMaxAmount] = useState<string>("0");
 
@@ -76,8 +76,6 @@ export default function PreferencesPage() {
         setIndustries(p.industries ?? []);
         setFundingTypes(p.funding_types ?? []);
         setRegion(p.region ?? "UK-wide");
-
-        // IMPORTANT: default to 0 to preserve "no limit" behaviour
         setMinAmount(String(p.min_amount ?? 0));
         setMaxAmount(String(p.max_amount ?? 0));
       }
@@ -120,11 +118,9 @@ export default function PreferencesPage() {
     const min_amount = toMoneyInt(minAmount, 0);
     const max_amount = toMoneyInt(maxAmount, 0);
 
-    // If max is set (non-zero) and smaller than min, auto-fix it
     const finalMax =
       max_amount > 0 && max_amount < min_amount ? min_amount : max_amount;
 
-    // Use upsert so it works even if profile row didn't exist
     const { error } = await supabase
       .from("profiles")
       .upsert(
@@ -154,129 +150,135 @@ export default function PreferencesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-gray-600">
-        Loading…
-      </div>
+      <PortalLayout
+        title="Criteria"
+        subtitle="Set the funding criteria used to match opportunities."
+      >
+        <div className="min-h-screen flex items-center justify-center text-gray-600">
+          Loading…
+        </div>
+      </PortalLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-6 py-10">
-        <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg border border-gray-200 p-8">
-          <h1 className="text-2xl font-extrabold text-gray-900">Set preferences</h1>
-          <p className="text-gray-600 mt-2">
-            Tell us what you want to be alerted on. You can change this anytime.
-          </p>
+    <PortalLayout
+      title="Criteria"
+      subtitle="Set the funding criteria used to match opportunities."
+    >
+      <div className="min-h-screen bg-gray-50">
+        <div className="container mx-auto px-6 py-10">
+          <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg border border-gray-200 p-8">
+            <h1 className="text-2xl font-extrabold text-gray-900">Set preferences</h1>
+            <p className="text-gray-600 mt-2">
+              Tell us what you want to be alerted on. You can change this anytime.
+            </p>
 
-          {/* Industries */}
-          <div className="mt-8">
-            <div className="font-bold text-gray-900 mb-3">Industries</div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {INDUSTRY_OPTIONS.map((opt) => (
-                <label
-                  key={opt}
-                  className="flex items-center gap-3 p-3 rounded-xl border border-gray-200 hover:bg-gray-50 cursor-pointer"
-                >
-                  <input
-                    type="checkbox"
-                    checked={industries.includes(opt)}
-                    onChange={() => toggle(opt, industries, setIndustries)}
-                    className="h-4 w-4"
-                  />
-                  <span className="text-gray-800">{opt}</span>
-                </label>
-              ))}
+            <div className="mt-8">
+              <div className="font-bold text-gray-900 mb-3">Industries</div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {INDUSTRY_OPTIONS.map((opt) => (
+                  <label
+                    key={opt}
+                    className="flex items-center gap-3 p-3 rounded-xl border border-gray-200 hover:bg-gray-50 cursor-pointer"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={industries.includes(opt)}
+                      onChange={() => toggle(opt, industries, setIndustries)}
+                      className="h-4 w-4"
+                    />
+                    <span className="text-gray-800">{opt}</span>
+                  </label>
+                ))}
+              </div>
             </div>
-          </div>
 
-          {/* Opportunity types */}
-          <div className="mt-8">
-            <div className="font-bold text-gray-900 mb-3">Opportunity type</div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {OPPORTUNITY_OPTIONS.map((opt) => (
-                <label
-                  key={opt}
-                  className="flex items-center gap-3 p-3 rounded-xl border border-gray-200 hover:bg-gray-50 cursor-pointer"
-                >
-                  <input
-                    type="checkbox"
-                    checked={fundingTypes.includes(opt)}
-                    onChange={() => toggle(opt, fundingTypes, setFundingTypes)}
-                    className="h-4 w-4"
-                  />
-                  <span className="text-gray-800">{opt}</span>
-                </label>
-              ))}
+            <div className="mt-8">
+              <div className="font-bold text-gray-900 mb-3">Opportunity type</div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {OPPORTUNITY_OPTIONS.map((opt) => (
+                  <label
+                    key={opt}
+                    className="flex items-center gap-3 p-3 rounded-xl border border-gray-200 hover:bg-gray-50 cursor-pointer"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={fundingTypes.includes(opt)}
+                      onChange={() => toggle(opt, fundingTypes, setFundingTypes)}
+                      className="h-4 w-4"
+                    />
+                    <span className="text-gray-800">{opt}</span>
+                  </label>
+                ))}
+              </div>
             </div>
-          </div>
 
-          {/* Region + values */}
-          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div>
-              <div className="font-bold text-gray-900 mb-2">Region</div>
-              <select
-                value={region}
-                onChange={(e) => setRegion(e.target.value)}
-                className="w-full rounded-xl border border-gray-200 px-4 py-3 bg-white"
+            <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div>
+                <div className="font-bold text-gray-900 mb-2">Region</div>
+                <select
+                  value={region}
+                  onChange={(e) => setRegion(e.target.value)}
+                  className="w-full rounded-xl border border-gray-200 px-4 py-3 bg-white"
+                >
+                  <option>UK-wide</option>
+                  <option>England</option>
+                  <option>Scotland</option>
+                  <option>Wales</option>
+                  <option>Northern Ireland</option>
+                </select>
+              </div>
+
+              <div>
+                <div className="font-bold text-gray-900 mb-2">Minimum opportunity value (£)</div>
+                <input
+                  value={minAmount}
+                  onChange={(e) => setMinAmount(e.target.value)}
+                  inputMode="numeric"
+                  className="w-full rounded-xl border border-gray-200 px-4 py-3"
+                  placeholder="0 = no minimum"
+                />
+                <div className="text-xs text-gray-500 mt-2">
+                  Set to 0 for no minimum.
+                </div>
+              </div>
+
+              <div>
+                <div className="font-bold text-gray-900 mb-2">Maximum opportunity value (£)</div>
+                <input
+                  value={maxAmount}
+                  onChange={(e) => setMaxAmount(e.target.value)}
+                  inputMode="numeric"
+                  className="w-full rounded-xl border border-gray-200 px-4 py-3"
+                  placeholder="0 = no maximum"
+                />
+                <div className="text-xs text-gray-500 mt-2">
+                  Set to 0 for no maximum.
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-10 flex items-center justify-between gap-4">
+              <button
+                onClick={() => router.push("/")}
+                className="px-5 py-2.5 rounded-lg border border-gray-200 hover:bg-gray-50 font-semibold"
               >
-                <option>UK-wide</option>
-                <option>England</option>
-                <option>Scotland</option>
-                <option>Wales</option>
-                <option>Northern Ireland</option>
-              </select>
+                Back
+              </button>
+
+              <button
+                onClick={save}
+                disabled={!canSave || saving}
+                className="px-6 py-2.5 rounded-lg font-bold text-white disabled:opacity-50"
+                style={{ background: "linear-gradient(90deg, #F05A28, #7B1E5A)" }}
+              >
+                {saving ? "Saving…" : "Save preferences"}
+              </button>
             </div>
-
-            <div>
-              <div className="font-bold text-gray-900 mb-2">Minimum opportunity value (£)</div>
-              <input
-                value={minAmount}
-                onChange={(e) => setMinAmount(e.target.value)}
-                inputMode="numeric"
-                className="w-full rounded-xl border border-gray-200 px-4 py-3"
-                placeholder="0 = no minimum"
-              />
-              <div className="text-xs text-gray-500 mt-2">
-                Set to 0 for no minimum.
-              </div>
-            </div>
-
-            <div>
-              <div className="font-bold text-gray-900 mb-2">Maximum opportunity value (£)</div>
-              <input
-                value={maxAmount}
-                onChange={(e) => setMaxAmount(e.target.value)}
-                inputMode="numeric"
-                className="w-full rounded-xl border border-gray-200 px-4 py-3"
-                placeholder="0 = no maximum"
-              />
-              <div className="text-xs text-gray-500 mt-2">
-                Set to 0 for no maximum.
-              </div>
-            </div>
-          </div>
-
-          {/* Buttons */}
-          <div className="mt-10 flex items-center justify-between gap-4">
-            <button
-              onClick={() => router.push("/")}
-              className="px-5 py-2.5 rounded-lg border border-gray-200 hover:bg-gray-50 font-semibold"
-            >
-              Back
-            </button>
-
-            <button
-              onClick={save}
-              disabled={!canSave || saving}
-              className="px-6 py-2.5 rounded-lg font-bold text-white disabled:opacity-50"
-              style={{ background: "linear-gradient(90deg, #F05A28, #7B1E5A)" }}
-            >
-              {saving ? "Saving…" : "Save preferences"}
-            </button>
           </div>
         </div>
       </div>
-    </div>
+    </PortalLayout>
   );
 }
