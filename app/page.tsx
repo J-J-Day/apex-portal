@@ -1,216 +1,171 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { supabase } from "../lib/supabase";
+import PortalLayout from "./components/portal-layout";
 
-type Profile = {
-  company_number: string | null;
-  preferences_set: boolean | null;
-};
+const latestOpportunities = [
+  {
+    title: "Decarbonisation Support Scheme",
+    funding: "£50k – £250k",
+    region: "UK-wide",
+    deadline: "30 September",
+    source: "Innovate UK",
+    status: "New",
+  },
+  {
+    title: "Innovation Voucher Fund",
+    funding: "£5k – £15k",
+    region: "England",
+    deadline: "12 October",
+    source: "Gov.uk",
+    status: "Closing Soon",
+  },
+  {
+    title: "Training & Skills Grant",
+    funding: "£2k – £10k",
+    region: "UK",
+    deadline: "Rolling",
+    source: "Official Publication",
+    status: "Open",
+  },
+];
 
-export default function PortalHomePage() {
-  const router = useRouter();
-  const [email, setEmail] = useState<string | null>(null);
-  const [profile, setProfile] = useState<Profile | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const run = async () => {
-      const { data } = await supabase.auth.getUser();
-      const user = data.user;
-
-      if (!user) {
-        router.push("/login");
-        return;
-      }
-
-      setEmail(user.email ?? null);
-
-      const { data: prof } = await supabase
-        .from("profiles")
-        .select("company_number, preferences_set")
-        .eq("id", user.id)
-        .single();
-
-      if (prof) setProfile(prof);
-
-      setLoading(false);
-    };
-
-    run();
-  }, [router]);
-
-  const logout = async () => {
-    await supabase.auth.signOut();
-    router.push("/login");
-  };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center text-gray-600">
-        Loading…
-      </div>
-    );
-  }
-
-  const companyComplete = !!profile?.company_number;
-  const preferencesComplete = !!profile?.preferences_set;
-  const monitoringActive = preferencesComplete; // company is optional now
-
+export default function DashboardPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Top Bar */}
-      <header className="bg-white border-b border-gray-200">
-        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-          <div className="text-lg font-bold">APEX Portal</div>
+    <PortalLayout
+      title="Dashboard"
+      subtitle="Overview of opportunities matched to your criteria."
+    >
+      <div className="space-y-8">
+        {/* Summary cards */}
+        <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <SummaryCard label="New Matches" value="12" />
+          <SummaryCard label="Closing Soon" value="3" />
+          <SummaryCard label="Saved Opportunities" value="5" />
+          <SummaryCard label="Alerts Active" value="On" />
+        </section>
 
-          <div className="flex items-center gap-4 text-sm text-gray-600">
-            <span>
-              Signed in as{" "}
-              <span className="font-semibold text-gray-800">{email}</span>
-            </span>
-            <button
-              onClick={logout}
-              className="px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition"
-            >
-              Log out
-            </button>
+        {/* Main dashboard row */}
+        <section className="grid gap-6 xl:grid-cols-3">
+          {/* Latest opportunities */}
+          <div className="xl:col-span-2 rounded-2xl border border-slate-200 bg-white p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-lg font-bold text-slate-900">
+                  Latest Matched Opportunities
+                </h2>
+                <p className="mt-1 text-sm text-slate-600">
+                  The most recent opportunities aligned with your current criteria.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-6 space-y-4">
+              {latestOpportunities.map((opportunity) => (
+                <div
+                  key={opportunity.title}
+                  className="rounded-xl border border-slate-200 p-4 transition hover:bg-slate-50"
+                >
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                    <div>
+                      <div className="text-base font-semibold text-slate-900">
+                        {opportunity.title}
+                      </div>
+                      <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-slate-600">
+                        <span>{opportunity.funding}</span>
+                        <span>{opportunity.region}</span>
+                        <span>Deadline: {opportunity.deadline}</span>
+                        <span>Source: {opportunity.source}</span>
+                      </div>
+                    </div>
+
+                    <span
+                      className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
+                        opportunity.status === "New"
+                          ? "bg-emerald-50 text-emerald-700"
+                          : opportunity.status === "Closing Soon"
+                          ? "bg-amber-50 text-amber-700"
+                          : "bg-slate-100 text-slate-700"
+                      }`}
+                    >
+                      {opportunity.status}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </header>
 
-      <main className="container mx-auto px-6 py-10 space-y-8">
-        {/* Welcome */}
-        <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-8">
-          <h1 className="text-2xl font-semibold mb-2">Welcome back 👋</h1>
+          {/* Right column */}
+          <div className="space-y-6">
+            <div className="rounded-2xl border border-slate-200 bg-white p-6">
+              <h2 className="text-lg font-bold text-slate-900">Your Criteria</h2>
+              <div className="mt-4 space-y-3 text-sm text-slate-600">
+                <div className="flex justify-between gap-4">
+                  <span className="text-slate-500">Industry</span>
+                  <span className="font-medium text-slate-900">Construction / Energy</span>
+                </div>
+                <div className="flex justify-between gap-4">
+                  <span className="text-slate-500">Region</span>
+                  <span className="font-medium text-slate-900">UK-wide</span>
+                </div>
+                <div className="flex justify-between gap-4">
+                  <span className="text-slate-500">Funding range</span>
+                  <span className="font-medium text-slate-900">£10k – £500k</span>
+                </div>
+                <div className="flex justify-between gap-4">
+                  <span className="text-slate-500">Opportunity type</span>
+                  <span className="font-medium text-slate-900">Decarbonisation</span>
+                </div>
+              </div>
 
-          <p className="text-gray-600 mb-6">
-            {!preferencesComplete
-              ? "First step: set your preferences so we know what to alert you on."
-              : "You're set up — view your matched opportunities."}
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
-            {/* Primary CTA */}
-            {!preferencesComplete ? (
-              <button
-                onClick={() => router.push("/preferences")}
-                className="px-6 py-3 main-gradient-bg text-white rounded-lg font-semibold hover:opacity-90 transition"
+              <a
+                href="/preferences"
+                className="mt-6 inline-flex rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
               >
-                Set preferences
-              </button>
-            ) : (
-              <button
-                onClick={() => router.push("/opportunities")}
-                className="px-6 py-3 main-gradient-bg text-white rounded-lg font-semibold hover:opacity-90 transition"
+                Edit criteria
+              </a>
+            </div>
+
+            <div className="rounded-2xl border border-slate-200 bg-white p-6">
+              <h2 className="text-lg font-bold text-slate-900">Alerts</h2>
+              <div className="mt-4 space-y-3 text-sm text-slate-600">
+                <div className="flex justify-between gap-4">
+                  <span className="text-slate-500">Email alerts</span>
+                  <span className="font-medium text-emerald-700">Enabled</span>
+                </div>
+                <div className="flex justify-between gap-4">
+                  <span className="text-slate-500">Frequency</span>
+                  <span className="font-medium text-slate-900">Immediate</span>
+                </div>
+              </div>
+
+              <a
+                href="/preferences"
+                className="mt-6 inline-flex rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
               >
-                View matched opportunities
-              </button>
-            )}
-
-            {/* Secondary CTA (optional) */}
-            {!companyComplete && (
-              <button
-                onClick={() => router.push("/link-company")}
-                className="px-6 py-3 bg-white border border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition"
-              >
-                Link company (optional)
-              </button>
-            )}
+                Manage alerts
+              </a>
+            </div>
           </div>
-
-          <div className="mt-4 text-sm text-gray-500">
-            {preferencesComplete
-              ? "Tip: you can refine your filters any time in Preferences."
-              : "Once preferences are set, we’ll start matching you to relevant opportunities."}
-          </div>
-        </div>
-
-        {/* Setup Status */}
-        <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
-          <h2 className="text-lg font-semibold mb-6">Your Setup</h2>
-
-          <div className="space-y-4">
-            <StatusRow
-              label="Preferences set"
-              complete={preferencesComplete}
-              pending={false}
-            />
-
-            <StatusRow
-              label="Monitoring active"
-              complete={monitoringActive}
-              pending={!monitoringActive}
-            />
-
-            <StatusRow
-              label="Company linked (optional)"
-              complete={companyComplete}
-              pending={false}
-            />
-          </div>
-        </div>
-
-        {/* Opportunities */}
-        <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
-          <div className="flex items-center justify-between gap-4">
-            <h2 className="text-lg font-semibold">Matched Opportunities</h2>
-
-            {preferencesComplete ? (
-              <button
-                onClick={() => router.push("/opportunities")}
-                className="text-sm font-semibold secondary-gradient-text hover:opacity-80 transition"
-              >
-                View all
-              </button>
-            ) : (
-              <button
-                onClick={() => router.push("/preferences")}
-                className="text-sm font-semibold secondary-gradient-text hover:opacity-80 transition"
-              >
-                Set preferences
-              </button>
-            )}
-          </div>
-
-          <div className="mt-4 text-gray-600">
-            {!preferencesComplete
-              ? "Set your preferences to start receiving matched opportunities here."
-              : "No matched opportunities yet. As soon as we find one that matches your filters, it’ll appear here."}
-          </div>
-        </div>
-      </main>
-    </div>
+        </section>
+      </div>
+    </PortalLayout>
   );
 }
 
-function StatusRow({
+function SummaryCard({
   label,
-  complete,
-  pending,
+  value,
 }: {
   label: string;
-  complete: boolean;
-  pending: boolean;
+  value: string;
 }) {
-  let badgeStyle = "bg-red-100 text-red-700";
-  let text = "Not yet";
-
-  if (complete) {
-    badgeStyle = "bg-green-100 text-green-700";
-    text = "Complete";
-  } else if (pending) {
-    badgeStyle = "bg-yellow-100 text-yellow-800";
-    text = "Pending";
-  }
-
   return (
-    <div className="flex justify-between items-center">
-      <span className="text-gray-700">{label}</span>
-      <span className={`px-3 py-1 rounded-full text-xs font-semibold ${badgeStyle}`}>
-        {text}
-      </span>
+    <div className="rounded-2xl border border-slate-200 bg-white p-5">
+      <div className="text-sm font-medium text-slate-500">{label}</div>
+      <div className="mt-2 text-2xl font-bold tracking-tight text-slate-900">
+        {value}
+      </div>
     </div>
   );
 }
