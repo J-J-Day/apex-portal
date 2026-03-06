@@ -3,11 +3,6 @@
 import React from "react";
 import Link from "next/link";
 
-/**
- * SmoothAnchor
- * - Use for in-page anchors only (href starts with #)
- * - Keeps smooth scroll without breaking Next.js Link usage for routes
- */
 function SmoothAnchor({
   href,
   children,
@@ -38,7 +33,6 @@ function SmoothAnchor({
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white text-slate-900 selection:bg-orange-100">
-      {/* Brand Styles (local to this page) */}
       <style>{`
         :root {
           --apex-orange: #E95420;
@@ -66,14 +60,11 @@ export default function LandingPage() {
         }
       `}</style>
 
-      {/* Top bar / Nav */}
       <header className="bg-white/95 backdrop-blur-md sticky top-0 z-40 border-b border-slate-200">
         <nav className="container mx-auto px-6 py-3 flex items-center justify-between">
           <Link href="/landing" className="flex items-center gap-2">
             <div className="flex flex-col">
-              <div className="text-xl font-extrabold secondary-gradient-text">
-                APEX
-              </div>
+              <div className="text-xl font-extrabold secondary-gradient-text">APEX</div>
               <div className="text-[10px] font-semibold text-slate-500 tracking-widest leading-none -mt-0.5">
                 GRANT SOLUTIONS
               </div>
@@ -81,28 +72,16 @@ export default function LandingPage() {
           </Link>
 
           <div className="hidden md:flex items-center gap-6 text-sm text-slate-600 font-medium">
-            <SmoothAnchor
-              href="#how-it-works"
-              className="hover:text-slate-900 transition-colors"
-            >
+            <SmoothAnchor href="#how-it-works" className="hover:text-slate-900 transition-colors">
               How it works
             </SmoothAnchor>
-            <SmoothAnchor
-              href="#challenge"
-              className="hover:text-slate-900 transition-colors"
-            >
+            <SmoothAnchor href="#challenge" className="hover:text-slate-900 transition-colors">
               The challenge
             </SmoothAnchor>
-            <SmoothAnchor
-              href="#sources"
-              className="hover:text-slate-900 transition-colors"
-            >
+            <SmoothAnchor href="#sources" className="hover:text-slate-900 transition-colors">
               Coverage
             </SmoothAnchor>
-            <SmoothAnchor
-              href="#faq"
-              className="hover:text-slate-900 transition-colors"
-            >
+            <SmoothAnchor href="#faq" className="hover:text-slate-900 transition-colors">
               FAQ
             </SmoothAnchor>
           </div>
@@ -124,7 +103,6 @@ export default function LandingPage() {
         </nav>
       </header>
 
-      {/* Hero (bg: white) */}
       <section className="bg-white">
         <div className="container mx-auto px-6 py-24">
           <div className="grid lg:grid-cols-2 gap-12 items-start">
@@ -134,15 +112,14 @@ export default function LandingPage() {
               </h1>
 
               <p className="mt-6 text-base md:text-lg text-slate-600 leading-relaxed max-w-xl">
-                Funding schemes are published across many national and regional sources, and
-                application windows can be easy to miss. Apex helps you maintain consistent
-                visibility by matching opportunities to your sector, region and funding criteria —
-                so you can focus on decisions, not searching.
+                Many UK funding schemes are published across fragmented sources and often have short
+                application windows. Apex helps you maintain visibility by matching opportunities to
+                your sector, region and funding criteria — so you can act before deadlines close.
               </p>
 
               <p className="mt-4 text-sm text-slate-500 max-w-xl leading-relaxed">
-                Built for teams without a dedicated grant research function who still need to stay
-                ahead of deadlines.
+                Built for SME teams that need better visibility of relevant funding without spending
+                hours checking multiple sources.
               </p>
 
               <div className="mt-10 flex flex-col sm:flex-row gap-3">
@@ -180,11 +157,7 @@ export default function LandingPage() {
               </div>
             </div>
 
-            {/* Example Briefing Card (kept intentionally “briefing”, not portal UI) */}
-            <div
-              id="example"
-              className="bg-slate-50 border border-slate-200 rounded-2xl p-8 shadow-sm"
-            >
+            <div id="example" className="bg-slate-50 border border-slate-200 rounded-2xl p-8 shadow-sm">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
@@ -207,17 +180,13 @@ export default function LandingPage() {
                   <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest mb-1">
                     Funding range
                   </div>
-                  <div className="text-lg font-bold text-slate-900">
-                    £50,000 – £250,000
-                  </div>
+                  <div className="text-lg font-bold text-slate-900">£50,000 – £250,000</div>
                 </div>
                 <div className="bg-white border border-slate-100 rounded-xl p-4">
                   <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest mb-1">
                     Deadline
                   </div>
-                  <div className="text-lg font-bold text-slate-900">
-                    30 September
-                  </div>
+                  <div className="text-lg font-bold text-slate-900">30 September</div>
                 </div>
               </div>
 
@@ -255,7 +224,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Process (bg: slate-50) */}
       <section id="how-it-works" className="bg-slate-50 py-24">
         <div className="container mx-auto px-6">
           <div className="max-w-4xl mx-auto text-center mb-20">
@@ -263,11 +231,11 @@ export default function LandingPage() {
               Process
             </span>
             <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
-              Stay Informed Without the Weekly Searching
+              A Clearer Way to Track Relevant Funding
             </h2>
             <p className="text-slate-600 mt-4 max-w-xl mx-auto text-base md:text-lg leading-relaxed">
-              A straightforward way to maintain visibility across relevant funding channels, so you
-              can act early and avoid missed windows.
+              A structured process designed to reduce manual searching and improve visibility of
+              relevant opportunities.
             </p>
           </div>
 
@@ -277,29 +245,28 @@ export default function LandingPage() {
               <TimelineStep
                 step={1}
                 title="Set your criteria"
-                text="Choose your sectors, region(s), funding types and an approximate value range."
+                text="Choose your sectors, regions, funding types and value range."
               />
               <TimelineStep
                 step={2}
-                title="We review verified sources"
-                text="We track central government, Innovate UK, local authorities and other verified sources relevant to your criteria."
+                title="We track relevant sources"
+                text="We review central government portals, Innovate UK, local authorities and verified sector funding sources relevant to your profile."
               />
               <TimelineStep
                 step={3}
-                title="Receive timely alerts"
-                text="When suitable schemes open or deadlines approach, you receive a concise notification with key details and source links."
+                title="Receive matched alerts"
+                text="When suitable opportunities are identified, you receive concise notifications with key details and source links."
               />
               <TimelineStep
                 step={4}
                 title="Review and decide"
-                text="Assess each match quickly and decide whether to progress, without trawling multiple portals."
+                text="Assess opportunities quickly and decide which ones are worth pursuing."
               />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Challenge (bg: white) */}
       <section id="challenge" className="bg-white py-24">
         <div className="container mx-auto px-6">
           <div className="mx-auto max-w-6xl">
@@ -350,9 +317,7 @@ export default function LandingPage() {
                   ].map((item, i) => (
                     <li key={i} className="flex items-start gap-3 text-left">
                       <span className="h-1.5 w-1.5 rounded-full bg-orange-500 mt-1.5 flex-shrink-0" />
-                      <span className="text-slate-900 font-medium text-sm leading-normal">
-                        {item}
-                      </span>
+                      <span className="text-slate-900 font-medium text-sm leading-normal">{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -367,7 +332,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Coverage (bg: slate-50) */}
       <section id="sources" className="bg-slate-50 py-24">
         <div className="container mx-auto px-6">
           <div className="mx-auto max-w-6xl">
@@ -421,35 +385,34 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Designed for (bg: white) */}
       <section id="designed-for" className="bg-white py-24">
         <div className="container mx-auto px-6">
           <div className="mx-auto max-w-5xl text-center">
             <h2 className="text-2xl md:text-3xl font-extrabold dark-purple-text tracking-tight mb-8">
-              Designed for UK SMEs Who Need Clarity
+              Designed for UK SMEs That Need Better Visibility
             </h2>
             <p className="text-slate-600 leading-relaxed text-base md:text-lg mb-16">
-              For owners, commercial teams and operations leads who want consistent oversight of
-              funding opportunities — without dedicating hours each week to manual checks.
+              For business owners, commercial teams and operations managers who need a clearer view
+              of relevant funding opportunities without dedicating hours each week to manual searching.
             </p>
 
             <div className="grid md:grid-cols-2 gap-8 text-left">
               <BulletCard
                 title="Typical users"
                 bullets={[
-                  "SMEs seeking capital funding and support schemes",
-                  "Construction, property and retrofit businesses",
-                  "Organisations exploring sustainability and decarbonisation",
-                  "Teams without dedicated grant research resources",
+                  "SME owners seeking better visibility of capital funding opportunities",
+                  "Commercial teams targeting project and growth funding",
+                  "Operations managers who need clearer oversight of deadlines",
+                  "Businesses without the internal capacity for dedicated research",
                 ]}
               />
               <BulletCard
                 title="What you can configure"
                 bullets={[
                   "Sectors and opportunity types",
-                  "Region(s) and value range",
-                  "Notification preferences",
-                  "Criteria can be updated at any time",
+                  "Region and value range",
+                  "Alert frequency and notification preferences",
+                  "Criteria can be updated as your needs change",
                 ]}
               />
             </div>
@@ -457,7 +420,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* FAQ (bg: slate-50) */}
       <section id="faq" className="bg-slate-50 py-24">
         <div className="container mx-auto px-6">
           <div className="mx-auto max-w-4xl">
@@ -466,7 +428,7 @@ export default function LandingPage() {
                 Frequently Asked Questions
               </h2>
               <p className="text-slate-600 mt-4 text-base md:text-lg leading-relaxed">
-                Clear answers to the common questions before creating an account.
+                Clear answers to common questions before creating an account.
               </p>
             </div>
 
@@ -477,7 +439,7 @@ export default function LandingPage() {
               />
               <FaqItem
                 q="Will I be spammed with alerts?"
-                a="No. Alerts are tied to your criteria, and you control notification preferences. You can pause or update criteria any time."
+                a="No. Alerts are tied to your criteria, and you control notification preferences. You can pause or update criteria at any time."
               />
               <FaqItem
                 q="Is this only for grants?"
@@ -493,14 +455,13 @@ export default function LandingPage() {
               />
               <FaqItem
                 q="Can I change my criteria later?"
-                a="Yes. Preferences are designed to be flexible and can be updated at any time."
+                a="Yes. Preferences can be updated at any time."
               />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Final CTA (bg: slate-50 kept for a clean close) */}
       <section className="bg-slate-50 py-24">
         <div className="container mx-auto px-6">
           <div className="mx-auto max-w-6xl">
@@ -537,14 +498,11 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="border-t border-slate-200 bg-white">
         <div className="container mx-auto px-6 py-16">
           <div className="flex flex-col md:flex-row md:items-start justify-between gap-12">
             <div className="flex flex-col">
-              <div className="text-xl font-extrabold secondary-gradient-text">
-                APEX
-              </div>
+              <div className="text-xl font-extrabold secondary-gradient-text">APEX</div>
               <div className="text-[10px] font-semibold text-slate-500 tracking-widest leading-none -mt-0.5">
                 GRANT SOLUTIONS
               </div>
@@ -585,8 +543,6 @@ export default function LandingPage() {
   );
 }
 
-/* ---------- Shared components ---------- */
-
 function BulletCard({ title, bullets }: { title: string; bullets: string[] }) {
   return (
     <div className="bg-white border border-slate-200 rounded-2xl p-8">
@@ -595,9 +551,7 @@ function BulletCard({ title, bullets }: { title: string; bullets: string[] }) {
         {bullets.map((b) => (
           <li key={b} className="flex gap-3 items-start">
             <span className="mt-2 h-1 w-1 rounded-full bg-slate-300 shrink-0" />
-            <span className="text-sm leading-relaxed text-slate-600 font-medium">
-              {b}
-            </span>
+            <span className="text-sm leading-relaxed text-slate-600 font-medium">{b}</span>
           </li>
         ))}
       </ul>
