@@ -1,5 +1,6 @@
 "use client";
 
+import PortalLayout from "../components/portal-layout";
 import { useRouter } from "next/navigation";
 
 export default function OpportunitiesPage() {
