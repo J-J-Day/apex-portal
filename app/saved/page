@@ -1,0 +1,28 @@
+"use client";
+
+import PortalLayout from "../components/portal-layout";
+
+export default function SavedPage() {
+  return (
+    <PortalLayout
+      title="Saved Opportunities"
+      subtitle="Funding opportunities you have bookmarked for review."
+    >
+      <div className="min-h-screen bg-gray-50">
+        <div className="container mx-auto px-6 py-10">
+          <div className="max-w-3xl mx-auto bg-white border border-gray-200 rounded-xl shadow-sm p-8">
+            <h1 className="text-2xl font-semibold mb-2">Saved opportunities</h1>
+
+            <p className="text-gray-600 mb-6">
+              When you bookmark opportunities from the dashboard, they will appear here so you can review them later.
+            </p>
+
+            <div className="text-sm text-gray-500">
+              No saved opportunities yet.
+            </div>
+          </div>
+        </div>
+      </div>
+    </PortalLayout>
+  );
+}
