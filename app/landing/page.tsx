@@ -104,7 +104,7 @@ export default function LandingPage() {
       </header>
 
       <section className="bg-white">
-        <div className="container mx-auto px-6 py-24">
+        <div className="container mx-auto px-6 pt-20 pb-24">
           <div className="grid items-start gap-12 lg:grid-cols-2">
             <div>
               <h1 className="dark-purple-text text-4xl font-extrabold leading-tight tracking-tight md:text-5xl">
