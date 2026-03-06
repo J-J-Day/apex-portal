@@ -141,26 +141,14 @@ export default function LandingPage() {
                 Currently available at no cost during phased rollout. No card required.
               </div>
 
-              <div className="mt-6 flex flex-wrap gap-2 text-xs text-slate-600">
-                <div className="mt-6 pt-6 border-t border-slate-200">
-  <div className="text-xs text-slate-500 mb-3 font-medium">
-    Monitoring sources such as
-  </div>
-
-  <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-slate-600">
-    {[
-      "Gov.uk",
-      "Innovate UK",
-      "Local Authority Funding",
-      "Official Publications",
-      "Sector Support Schemes",
-    ].map((source) => (
-      <div key={source} className="flex items-center gap-2">
-        <span className="h-1.5 w-1.5 rounded-full bg-orange-500" />
-        <span>{source}</span>
-      </div>
-    ))}
-  </div>
+        {/* Credibility row */}
+<div className="mt-8 text-sm text-slate-500">
+  <span className="font-medium text-slate-600">
+    Monitoring sources including
+  </span>
+  <span className="ml-2 text-slate-500">
+    Gov.uk · Innovate UK · Local Authority Funding · Official Publications · Sector Support Schemes
+  </span>
 </div>
                 <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1">
                   <span className="h-1.5 w-1.5 rounded-full bg-orange-500" />
